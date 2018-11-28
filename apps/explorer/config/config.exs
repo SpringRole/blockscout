@@ -25,6 +25,16 @@ config :explorer, Explorer.Repo,
   loggers: [Explorer.Repo.PrometheusLogger, Ecto.LogEntry],
   migration_timestamps: [type: :utc_datetime]
 
+config :spandex_ecto, SpandexEcto.EctoLogger,
+  service: :ecto,
+  tracer: Explorer.Tracer,
+  otp_app: :explorer
+
+config :explorer, Explorer.Tracer,
+  service: :explorer,
+  adapter: SpandexDatadog.Adapter,
+  trace_key: :blockscout
+
 config :explorer, Explorer.Counters.TokenTransferCounter, enabled: true
 
 config :explorer, Explorer.Counters.TokenHoldersCounter, enabled: true, enable_consolidation: true

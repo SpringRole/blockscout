@@ -19,6 +19,8 @@ variant =
     |> String.downcase()
   end
 
+config :indexer, Indexer.Tracer, env: "dev", disabled?: true
+
 # Import variant specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "dev/#{variant}.exs"

@@ -44,6 +44,7 @@ defmodule Indexer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:decorator, "~> 1.2"},
       # JSONRPC access to Parity for `Explorer.Indexer`
       {:ethereum_jsonrpc, in_umbrella: true},
       # RLP encoding
@@ -57,7 +58,9 @@ defmodule Indexer.MixProject do
       # Log errors and application output to separate files
       {:logger_file_backend, "~> 0.0.10"},
       # Mocking `EthereumJSONRPC.Transport`, so we avoid hitting real chains for local testing
-      {:mox, "~> 0.4", only: [:test]}
+      {:mox, "~> 0.4", only: [:test]},
+      {:spandex, "~> 0.2.4"},
+      {:spandex_datadog, "~> 0.3.1"}
     ]
   end
 

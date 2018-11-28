@@ -15,6 +15,11 @@ config :ethereum_jsonrpc, EthereumJSONRPC.RequestCoordinator,
   wait_per_timeout: :timer.seconds(20),
   max_jitter: :timer.seconds(2)
 
+config :ethereum_jsonrpc, EthereumJSONRPC.Tracer,
+  service: :ethereum_jsonrpc,
+  adapter: SpandexDatadog.Adapter,
+  trace_key: :blockscout
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

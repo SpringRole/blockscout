@@ -3,10 +3,12 @@ defmodule Indexer.Block.Fetcher do
   Fetches and indexes block ranges.
   """
 
+  use Spandex.Decorators
+
   require Logger
 
   alias Explorer.Chain.{Address, Block, Import}
-  alias Indexer.{AddressExtraction, CoinBalance, MintTransfer, Token, TokenTransfers}
+  alias Indexer.{AddressExtraction, CoinBalance, MintTransfer, Token, TokenTransfers, Tracer}
   alias Indexer.Address.{CoinBalances, TokenBalances}
   alias Indexer.Block.Fetcher.Receipts
   alias Indexer.Block.Transform
@@ -75,6 +77,7 @@ defmodule Indexer.Block.Fetcher do
     struct!(__MODULE__, named_arguments)
   end
 
+  @decorate span(tracer: Tracer)
   @spec fetch_and_import_range(t, Range.t()) ::
           {:ok, {inserted :: %{}, next :: :more | :end_of_chain}}
           | {:error,

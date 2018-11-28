@@ -16,6 +16,11 @@ config :logger, :indexer,
   metadata: [:application, :request_id],
   metadata_filter: [application: :indexer]
 
+config :indexer, Indexer.Tracer,
+  service: :indexer,
+  adapter: SpandexDatadog.Adapter,
+  trace_key: :blockscout
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

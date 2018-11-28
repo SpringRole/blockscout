@@ -11,6 +11,8 @@ config :logger, :indexer_token_balances,
   metadata_filter: [fetcher: :token_balances],
   rotate: %{max_bytes: 52_428_800, keep: 19}
 
+config :indexer, Indexer.Tracer, env: "production", disabled?: true
+
 variant =
   if is_nil(System.get_env("ETHEREUM_JSONRPC_VARIANT")) do
     "parity"

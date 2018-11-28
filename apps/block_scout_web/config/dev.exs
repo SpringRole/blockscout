@@ -21,6 +21,8 @@ config :block_scout_web, BlockScoutWeb.Endpoint,
     ]
   ]
 
+config :block_scout_web, BlockScoutWeb.Tracer, env: "dev", disabled?: true
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

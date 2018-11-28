@@ -4,11 +4,13 @@ defmodule Indexer.Block.Uncle.Fetcher do
   `uncle_fetched_at` where the `uncle_hash` matches `hash`.
   """
 
+  use Spandex.Decorators
+
   require Logger
 
   alias Explorer.Chain
   alias Explorer.Chain.Hash
-  alias Indexer.{AddressExtraction, Block, BufferedTask}
+  alias Indexer.{AddressExtraction, Block, BufferedTask, Tracer}
 
   @behaviour Block.Fetcher
   @behaviour BufferedTask
@@ -65,6 +67,7 @@ defmodule Indexer.Block.Uncle.Fetcher do
   end
 
   @impl BufferedTask
+  @decorate trace(name: "fetch", resource: "Indexer.Block.Uncle.Fetcher.run/2", service: :indexer, tracer: Tracer)
   def run(hashes, %Block.Fetcher{json_rpc_named_arguments: json_rpc_named_arguments} = block_fetcher) do
     # the same block could be included as an uncle on multiple blocks, but we only want to fetch it once
     unique_hashes = Enum.uniq(hashes)

@@ -12,3 +12,5 @@ config :ethereum_jsonrpc, EthereumJSONRPC.RequestCoordinator,
   ],
   wait_per_timeout: 2,
   max_jitter: 1
+
+config :ethereum_jsonrpc, EthereumJSONRPC.Tracer, disabled?: true

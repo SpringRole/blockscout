@@ -20,6 +20,8 @@ config :logger, :reading_token_functions,
 
 import_config "dev.secret.exs"
 
+config :explorer, Explorer.Tracer, env: "dev", disabled?: true
+
 variant =
   if is_nil(System.get_env("ETHEREUM_JSONRPC_VARIANT")) do
     "parity"

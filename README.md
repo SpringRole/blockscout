@@ -277,6 +277,22 @@ BlockScout is setup to export [Prometheus](https://prometheus.io/) metrics at `/
    3. Click "Load"
 6. View the dashboards.  (You will need to click-around and use BlockScout for the web-related metrics to show up.)
 
+## Tracing
+
+Blockscout supports tracing via
+[Spandex](http://git@github.com:spandex-project/spandex.git). Each application
+has its own tracer, that is configured internally to that application. In order
+to enable it, visit each application's `config/<env>.ex` and update its tracer
+configuration to change `disabled?: true` to `disabled?: false`. Do this for
+each application you'd like included in your trace data. Currently, only
+datadog is supported as a tracing backend, but more will be added soon. If you
+want to use a different backend, remove the datadog supervisor from
+`Explorer.Application` and follow any instructions provided in Spandex for
+setting up that backend. If you would like to use datadog, after enabling
+spandex, just set `"DATADOG_HOST"` and `"DATADOG_PORT"` environment variables to
+the host/port that your datadog agent is running on. For more information on
+datadog and the datadog agent, see their [documentation](https://docs.datadoghq.com/).
+
 ## Memory Usage
 
 The work queues for building the index of all blocks, balances (coin and token), and internal transactions can grow quite large.   By default, the soft-limit is 1 GiB, which can be changed in `apps/indexer/config/config.exs`:

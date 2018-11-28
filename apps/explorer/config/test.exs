@@ -23,6 +23,8 @@ config :logger, :explorer,
   level: :warn,
   path: Path.absname("logs/test/explorer.log")
 
+config :explorer, Explorer.Tracer, disabled?: true
+
 secret_file =
   __ENV__.file
   |> Path.dirname()
