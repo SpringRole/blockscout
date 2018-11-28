@@ -64,8 +64,7 @@ defmodule BlockScout.Mixfile do
       {:ex_doc, "~> 0.19.0", only: [:dev]},
       # Code coverage
       {:excoveralls, "~> 0.10.0", only: [:test], github: "KronicDeth/excoveralls", branch: "circle-workflows"},
-      {:spandex, path: "~/Development/spandex", override: true}
-      # {:spandex, github: "spandex-project/spandex", branch: "allow-setting-trace-key", override: true},
+      {:spandex, github: "spandex-project/spandex", branch: "allow-setting-trace-key", override: true}
     ]
   end
 end
