@@ -3,8 +3,8 @@ use Mix.Config
 # Configure your database
 config :explorer, Explorer.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "explorer_dev",
-  hostname: "localhost",
+  database: "explorer",
+  hostname: "blockchainexplorerdata.cbuqrrbjabbr.us-east-1.rds.amazonaws.com",
   pool_size: 20,
   pool_timeout: 60_000,
   timeout: 80_000
@@ -22,7 +22,7 @@ import_config "dev.secret.exs"
 
 variant =
   if is_nil(System.get_env("ETHEREUM_JSONRPC_VARIANT")) do
-    "ganache"
+    "parity"
   else
     System.get_env("ETHEREUM_JSONRPC_VARIANT")
     |> String.split(".")
