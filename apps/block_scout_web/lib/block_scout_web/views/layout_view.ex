@@ -16,7 +16,7 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def subnetwork_title do
-    Keyword.get(application_config(), :subnetwork) || "Sokol Testnet"
+    Keyword.get(application_config(), :subnetwork) || ""
   end
 
   def network_title do
@@ -82,7 +82,7 @@ defmodule BlockScoutWeb.LayoutView do
     if release_link == "" || release_link == nil do
       version
     else
-      html_escape({:safe, "<a href=\"#{release_link}\" target=\"_blank\">#{version}</a>"})
+      html_escape({:safe, "<a href=\"#{release_link}\" class=\"footer-link\" target=\"_blank\">#{version}</a>"})
     end
   end
 
