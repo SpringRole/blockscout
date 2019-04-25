@@ -246,12 +246,14 @@
 }
 
 .CopyRightTxttop{
+  display: block;
   @media (max-width: 768px) {
     display: none;
   }
 }
 
 .CopyRightTxtbottom{
+  display: none;
   @media (max-width: 768px) {
     display: block;
     margin-top: 20px;
