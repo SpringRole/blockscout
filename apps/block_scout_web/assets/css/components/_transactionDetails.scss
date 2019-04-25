@@ -387,6 +387,7 @@
 }
 
 .blockchainInputTable{
+    overflow-x: auto;
     table{
         tr, td, th{
             border-radius: 4px;
@@ -433,7 +434,13 @@
 .logAddress{
     display: flex;
     margin: 30px 0  30px;
+    @media (max-width: 768px) {
+        display: block;
+    }
     .logAddressLabel{
+        @media (max-width: 768px) {
+            margin-bottom: 10px;
+        }
         p{
             font-size: 12px;
             font-weight: 500;
@@ -446,6 +453,9 @@
     }
     .logAddressValue{
         margin-left: 105px;
+        @media (max-width: 768px) {
+            margin-left: 0;
+        }
         p{
             color: #004fc1;
             font-weight: normal;
@@ -456,6 +466,7 @@
 
 // Table Style
 .customTableParticular{
+    overflow-x: scroll;
     table{
         tr, td, th{
             border-radius: 4px;
@@ -491,7 +502,13 @@
 .decoded{
     display: flex;
     margin-bottom: 30px;
+    @media (max-width: 768px) {
+        display: block;
+    }
     .decodedLabel{
+        @media (max-width: 768px) {
+            margin-bottom: 10px;
+        }
         p{
             font-size: 12px;
             font-weight: 500;
@@ -504,31 +521,44 @@
     .decodedTable{
         margin-left: 105px;
         width: 100%;
+        @media (max-width: 768px) {
+            margin-left: 0;
+        }
         .customTableParticular{
-            table{
-                tr {
-                    th,td{
-                        &:first-child{
-                            width: 154px;
-                        }
-                    }
+            div{
+                @media (max-width: 768px) {
+                    overflow-x: auto; 
                 }
-            } 
-            .userTable{
-                tr {
-                    th,td{
-                        &:first-child{
-                            width: 154px;
+                table{
+                    tr {
+                        th,td{
+                            &:first-child{
+                                width: 154px;
+                            }
                         }
                     }
-                    th,td{
-                        &:nth-child(2){
-                            width: 154px;
+                } 
+            }
+            div{
+                @media (max-width: 768px) {
+                    overflow-x: auto; 
+                }   
+                .userTable{
+                    tr {
+                        th,td{
+                            &:first-child{
+                                width: 154px;
+                            }
                         }
-                    }
-                    th,td{
-                        &:nth-child(3){
-                            width: 154px;
+                        th,td{
+                            &:nth-child(2){
+                                width: 154px;
+                            }
+                        }
+                        th,td{
+                            &:nth-child(3){
+                                width: 154px;
+                            }
                         }
                     }
                 }
@@ -539,6 +569,9 @@
 .LogsTopic{
     margin-bottom: 30px;
     display: flex;
+    @media (max-width: 768px) {
+        display: block;
+    }
     .LogsTopicLabel{
         p{
             font-size: 12px;
@@ -555,6 +588,11 @@
         border: solid 1px #d2d2d2;
         padding: 10px 12px;
         margin-left: 125px;
+        @media (max-width: 768px) {
+            width: 100%;
+            margin-left: 0;
+            height: auto;
+        }
         p{
             font-size: 10px;
             font-weight: 500;
@@ -577,10 +615,16 @@
     margin-bottom: 0;
     .LogsTopicValues{
         height: 58px;
+        @media (max-width: 768px) {
+            height: auto;
+        }
         p{
             align-content: flex-start;
             align-items: flex-start;
 
         }
     }
+}
+table{
+    overflow-x:auto;
 }
