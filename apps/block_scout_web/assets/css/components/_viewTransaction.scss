@@ -1,0 +1,379 @@
+.transactionCountBar{
+    height: 121px;
+    border-radius: 4px;
+    background-image: linear-gradient(to right, #7296b5, #a199a9 54%, #c79da9);
+    padding: 22px 40px;
+    margin-bottom: 30px;
+    @media (max-width: 768px) {
+        width: calc(100% - 40px);
+        margin: auto;
+        padding: 26px 20px 18px 20px;
+        margin-bottom: 20px;
+        height: auto;
+        display: -webkit-box;
+        background-image: linear-gradient(140deg, #7296b5, #a199a9 85%, #c79da9);
+    }
+    .transactionViewsParent{
+        display: flex;
+        @media (max-width: 768px) {
+            display: block;
+            width: 100%;
+        }
+        .transactionViews{
+            border-right: 1px solid #f5f7f8;
+            padding-right: 70px;
+            @media (max-width: 768px) {
+                border-right: 0;
+                padding-right: 0;
+                margin-bottom: 16px;
+                padding-bottom: 14px;
+                border-bottom: 1px solid #f5f7f8;
+            }
+            .transactionHeader{
+                h3{
+                    font-size: 16px;
+                    font-weight: normal;
+                    line-height: 1.5;
+                    text-align: left;
+                    color: #ffffff; 
+                    margin: 0 0 3px 0;
+                    @media (max-width: 768px) {
+                        font-size: 10px;
+                        margin: 0 0 10px 0;
+                    }
+                }
+            }
+            .transactionCountValues{
+                display: flex;
+                h1{
+                    font-size: 22px;
+                    font-weight: 500;
+                    line-height: 1.09;
+                    text-align: left;
+                    color: #ffffff;
+                    margin: 0 11px 0 0;
+                    display: flex;
+                    @media (max-width: 768px) {
+                        font-size: 16px;
+                    }
+                    span{
+                        font-size: 12px;
+                        text-align: left;
+                        color: #ffffff;
+                        font-weight: normal;
+                        margin: 18px 0 0 1px;
+                        @media (max-width: 768px) {
+                            font-size: 10px;
+                            margin: 10px 0 0 4px;
+                        }
+                    }
+                }
+            }
+            .viewTransactionLink{
+                p{
+                    font-size: 12px;
+                    line-height: 1.33;
+                    text-align: left;
+                    color: #ffffff;
+                    margin: 0;
+                    @media (max-width: 768px) {
+                        font-size: 10px;
+                        margin-top: 4px;
+                        img{
+                            width: 13px;
+                            margin-left: 10px;
+                        }
+                    }
+                }
+            }
+        }
+        .transactionViewSimilar{
+            padding: 0 59px 0 70px;
+            border: 0;
+            @media (max-width: 768px) {
+                padding: 0;
+                width: 50%;
+                float: left;
+                margin-bottom: 14px;
+            }
+        }
+    }
+}
+
+.blockscoutCardTransactionView{
+    padding: 30px 40px 40px 40px;
+    @media (max-width: 768px) {
+        padding: 20px;
+    }
+    .blockscoutHeader{
+        margin-bottom: 28px;
+        .blockscoutHeaderInner{
+            h2{
+                font-size: 16px;
+            }
+            .viewAllTransactionLink{
+                h4{
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 1.36;
+                    text-align: right;
+                    color: #0250c1;
+                    margin: 0;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                    span{
+                        margin-left: 8px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    .trasactionStatusViewParent{
+        border-radius: 4px;
+        border: solid 0.5px #d2d2d2;
+        border-left: 0;
+        background-color: #ffffff;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            display: block;
+            position: relative;
+        }
+        .trasactionStatus{
+            padding: 22px 0 22px 24px;
+            display: flex;
+            @media (max-width: 768px) {
+                display: block;
+                padding: 16px 16px 11px 13px;
+            }
+            .transactionStatusLable{
+                width: 113px;
+                @media (max-width: 768px) {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                h6{
+                    font-size: 12px;
+                    font-weight: 500;
+                    line-height: 1.33;
+                    text-align: left;
+                    color: #4a4a4a; 
+                    margin: 0 0 4px 0;
+                    @media (max-width: 768px) {
+                        margin: 0 0 16px 0;
+                    }
+                }
+            }
+            .transactionStatusDesctiption{
+                margin-left: 50px;
+                @media (max-width: 768px) {
+                    margin-left: 0;
+                    width: calc(100% - 16px);
+                }
+                h5{
+                    margin: 0 0 4px;
+                    font-size: 12px;
+                    font-weight: normal;
+                    line-height: 1.33;
+                    text-align: left;
+                    color: #4a4a4a;
+                    @media (max-width: 768px) {
+                        margin: 0 0 19px;
+                    }
+                    span{
+                        font-weight: bold;
+                    }
+                }
+                span{
+                    a{
+                        font-size: 12px;
+                        font-weight: normal;
+                        line-height: 1.33;
+                        text-align: left;
+                        color: #004fc1;
+                        img{
+                            width: 10px;
+                            margin-left: 9px;
+                        }
+                    }
+                }
+            }
+        }
+        .transactionSuccess{
+            border-left: 6px solid #30af38;
+            border-radius: 4px;
+            .transactionStatusLable{
+                p{
+                    font-size: 10px;
+                    font-weight: 500;
+                    line-height: 1.3;
+                    text-align: left;
+                    color: #30af38;
+                    margin: 0; 
+                }
+            }
+        }
+        .transactionFailed{
+            border-left: 6px solid #f20000;
+            border-radius: 4px;
+            .transactionStatusLable{
+                p{
+                    font-size: 10px;
+                    font-weight: 500;
+                    line-height: 1.3;
+                    text-align: left;
+                    color: #f20000; 
+                    margin: 0;
+                }
+            }
+        }
+        .transactionTime{
+            padding-right: 50px;
+            @media (max-width: 768px) {
+                position: absolute;
+                bottom: 12px;
+                right: 16px;
+                padding: 0;
+            }
+            p{
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 1.33;
+                text-align: right;
+                color: #808080;
+                margin: 0;
+            }
+        }
+    }
+}
+
+// Contracts
+.transactionContacts{
+    margin-bottom: 10px; 
+    &:last-child{
+        margin-bottom: 0;
+    }
+    .transactionContactsBar{
+        border-radius: 4px;
+        border: solid 0.5px #d2d2d2;
+        background-color: #ffffff;
+        padding: 25px 50px 27px 30px;
+        display: flex;
+        justify-content: space-between;
+        @media (max-width: 768px) {
+            padding: 20px 40px 18px 20px;
+            display: block;
+        }
+        .transactionContactsLable{
+            @media (max-width: 768px) {
+                margin-bottom: 16px;
+            }
+            h5{
+                font-size: 12px;
+                font-weight: 500;
+                line-height: 1.33;
+                text-align: left;
+                color: #4a4a4a;
+                margin: 0 0 10px;
+                @media (max-width: 768px) {
+                    margin: 0 0 10px;
+                }
+            }
+            p{
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 1.33;
+                text-align: left;
+                color: #004fc1;
+                margin: 0;
+                word-break: break-all;
+                @media (max-width: 768px) {
+                    margin: 0 0 16px;
+                }
+            }
+        }
+        .transactionContactsValues{
+            @media (max-width: 768px) {
+                margin-bottom: 0;
+            }
+            h5{
+                @media (max-width: 768px) {
+                    margin: 0 0 4px;
+                }
+            }
+            p{
+                color: #808080;
+                text-align: right;
+                @media (max-width: 768px) {
+                    text-align: left;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+// Blocks
+.transactionBlocksParent{
+    display: flex;
+    @media (max-width: 768px) {
+        display: block;
+    }
+    .transactionBlocks{
+        width: 245px;
+        border-radius: 4px;
+        border: solid 0.5px #d2d2d2;
+        background-color: #ffffff;
+        padding: 16px 20px;
+        margin-left: 20px;
+        &:first-child{
+            margin-left: 0;
+        }
+        @media (max-width: 768px) {
+            margin-left: 0;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        h4{
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.36;
+            text-align: left;
+            color: #4a4a4a;   
+            margin: 0 0 11px 0;
+            cursor: pointer;
+        }
+        h5{
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 1.33;
+            text-align: left;
+            color: #808080;
+            margin: 0 0 9px;
+            span{
+                margin: 0 0 0 29px;
+            }
+        }
+        p{
+            font-size: 12px;
+            font-weight: normal;
+            line-height: 1.33;
+            text-align: left;
+            color: #808080;
+            margin: 0;
+            word-break: break-all;
+            span{
+                color: #004fc1;
+            }
+        }
+    }
+}

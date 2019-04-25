@@ -4,201 +4,201 @@
 .transactionContainer{
     padding: 0;
     margin-bottom: 80px;
-    .blockscoutCard{  
-        border-radius: 4px;
-        background-color: #ffffff;
-        padding: 30px 40px 28px;
+}
+.blockscoutCard{  
+    border-radius: 4px;
+    background-color: #ffffff;
+    padding: 30px 40px 28px;
+    margin-bottom: 30px;
+    @media (max-width: 768px) {
+        padding: 20px;
+    }
+    .blockscoutHeader{
+        .blockscoutHeaderInner{
+            position: relative;
+            margin-bottom: 19px;
+            display: flex;
+            justify-content: space-between;
+            @media (max-width: 768px) {
+                margin-bottom: 27px;
+            }
+            h2{
+                color: #4a4a4a;
+                font-size: 20px;
+                font-weight: 500;
+                line-height: 1.3;
+                text-align: left;
+                margin: 0;
+                &::before{
+                    width: 4px;
+                    height: 23px;
+                    background-color: #81a0b8;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: -40px;
+                    content: '';
+                    margin: auto;
+                    @media (max-width: 768px) {
+                        left: -20px;
+                    }
+                }
+            }
+            span{
+                color: #004bc4;
+                cursor: pointer;
+                i{
+                    font-size: 14px;
+                    margin-left: 6px;
+                }
+            }
+        }
+    }
+    .transactionDetails{
+        display: flex;
         margin-bottom: 30px;
         @media (max-width: 768px) {
-            padding: 20px;
+            display: block;
         }
-        .blockscoutHeader{
-            .blockscoutHeaderInner{
-                position: relative;
-                margin-bottom: 19px;
-                display: flex;
-                justify-content: space-between;
-                @media (max-width: 768px) {
-                    margin-bottom: 27px;
-                }
-                h2{
-                    color: #4a4a4a;
-                    font-size: 20px;
-                    font-weight: 500;
-                    line-height: 1.3;
+        .transactionDetailsContentLeft{
+            width: 420px;
+            @media (max-width: 768px) {
+                width: 100%;
+            }
+            .transactionDetailsAttested{
+                margin-bottom: 30px;
+                h3{
+                    font-size: 14px;
+                    font-weight: 500; 
+                    line-height: 1.43;
                     text-align: left;
+                    color: #4a4a4a;
                     margin: 0;
-                    &::before{
-                        width: 4px;
-                        height: 23px;
-                        background-color: #81a0b8;
-                        position: absolute;
-                        top: 0;
-                        bottom: 0;
-                        left: -40px;
-                        content: '';
-                        margin: auto;
+                }
+            }
+            .transactionDetailsType_Stamp{
+                display: flex;
+                @media (max-width: 768px) {
+                    display: block;
+                    margin-bottom: 18px;
+                }
+                .transactionDetailsType_StampInner{
+                    h5{
+                        font-size: 12px;
+                        font-weight: 500;
+                        line-height: 1.33;
+                        text-align: left;
+                        color: #4a4a4a;
+                        margin-bottom: 4px;
+                    }
+                    p{
+                        font-size: 12px;
+                        line-height: 1.33;
+                        text-align: left;
+                        color: #808080;
+                        margin: 0;
                         @media (max-width: 768px) {
-                            left: -20px;
+                            margin-bottom: 8px;
                         }
                     }
                 }
-                span{
-                    color: #004bc4;
-                    cursor: pointer;
-                    i{
-                        font-size: 14px;
-                        margin-left: 6px;
+                .type_StampInnerValues{
+                    margin-left: 64px;
+                    @media (max-width: 768px) {
+                        margin-left: 0;
                     }
                 }
             }
         }
-        .transactionDetails{
+        .transactionDetailsContentRight{
+            margin-left: 60px;
             display: flex;
-            margin-bottom: 30px;
             @media (max-width: 768px) {
                 display: block;
+                margin-left: 0;
             }
-            .transactionDetailsContentLeft{
-                width: 420px;
-                @media (max-width: 768px) {
-                    width: 100%;
-                }
-                .transactionDetailsAttested{
-                    margin-bottom: 30px;
-                    h3{
-                        font-size: 14px;
-                        font-weight: 500; 
-                        line-height: 1.43;
-                        text-align: left;
-                        color: #4a4a4a;
-                        margin: 0;
-                    }
-                }
-                .transactionDetailsType_Stamp{
+            .attestorVerifierParent{
+                .attestorVerifier{
                     display: flex;
                     @media (max-width: 768px) {
-                        display: block;
                         margin-bottom: 18px;
                     }
-                    .transactionDetailsType_StampInner{
-                        h5{
+                    .attestorVerifierAvatar{
+                        width: 60px;
+                        margin-right: 10px;
+                        img{
+                            width: 60px;
+                            height: 60px;
+                            margin-bottom: 6px; 
+                        }
+                        h6{
                             font-size: 12px;
                             font-weight: 500;
                             line-height: 1.33;
+                            text-align: center;
+                            color: #808080;
+                            margin: 0;
+                        }
+                    }
+                    .attestorVerifierDetails{
+                        h3{
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 20px;
+                            text-align: left;
+                            color: #393e48;
+                            margin: 0;
+                        }
+                        h4{
+                            font-size: 12px;
+                            font-weight: 500;
+                            line-height: 1.75;
                             text-align: left;
                             color: #4a4a4a;
-                            margin-bottom: 4px;
+                            margin: 0;
                         }
                         p{
                             font-size: 12px;
+                            font-weight: normal;
                             line-height: 1.33;
                             text-align: left;
                             color: #808080;
                             margin: 0;
-                            @media (max-width: 768px) {
-                                margin-bottom: 8px;
-                            }
-                        }
-                    }
-                    .type_StampInnerValues{
-                        margin-left: 64px;
-                        @media (max-width: 768px) {
-                            margin-left: 0;
                         }
                     }
                 }
             }
-            .transactionDetailsContentRight{
+            .attestorVerifierLastparent{
                 margin-left: 60px;
-                display: flex;
                 @media (max-width: 768px) {
-                    display: block;
-                    margin-left: 0;
-                }
-                .attestorVerifierParent{
-                    .attestorVerifier{
-                        display: flex;
-                        @media (max-width: 768px) {
-                            margin-bottom: 18px;
-                        }
-                        .attestorVerifierAvatar{
-                            width: 60px;
-                            margin-right: 10px;
-                            img{
-                                width: 60px;
-                                height: 60px;
-                                margin-bottom: 6px; 
-                            }
-                            h6{
-                                font-size: 12px;
-                                font-weight: 500;
-                                line-height: 1.33;
-                                text-align: center;
-                                color: #808080;
-                                margin: 0;
-                            }
-                        }
-                        .attestorVerifierDetails{
-                            h3{
-                                font-size: 14px;
-                                font-weight: 500;
-                                line-height: 20px;
-                                text-align: left;
-                                color: #393e48;
-                                margin: 0;
-                            }
-                            h4{
-                                font-size: 12px;
-                                font-weight: 500;
-                                line-height: 1.75;
-                                text-align: left;
-                                color: #4a4a4a;
-                                margin: 0;
-                            }
-                            p{
-                                font-size: 12px;
-                                font-weight: normal;
-                                line-height: 1.33;
-                                text-align: left;
-                                color: #808080;
-                                margin: 0;
-                            }
-                        }
-                    }
-                }
-                .attestorVerifierLastparent{
-                    margin-left: 60px;
-                    @media (max-width: 768px) {
-                        margin-left: 0; 
-                    }
+                    margin-left: 0; 
                 }
             }
         }
-        .transactionValues{
-            border-top: 1px solid #f5f7f8;
-            padding-top: 30px;
-            display: flex;
-            .transactionlabel{
-                p{
-                    font-size: 12px;
-                    font-weight: 500;
-                    line-height: 1.33;
-                    text-align: left;
-                    color: #4a4a4a;
-                }
+    }
+    .transactionValues{
+        border-top: 1px solid #f5f7f8;
+        padding-top: 30px;
+        display: flex;
+        .transactionlabel{
+            p{
+                font-size: 12px;
+                font-weight: 500;
+                line-height: 1.33;
+                text-align: left;
+                color: #4a4a4a;
             }
-            .transactionCurrentValues{
-                margin-left: 60px;
+        }
+        .transactionCurrentValues{
+            margin-left: 60px;
+            @media (max-width: 768px) {
+                margin-left: 30px;
+            }
+            p{
+                color: #004fc1;
+                font-weight: normal;
                 @media (max-width: 768px) {
-                    margin-left: 30px;
-                }
-                p{
-                    color: #004fc1;
-                    font-weight: normal;
-                    @media (max-width: 768px) {
-                        word-break: break-all;
-                    }
+                    word-break: break-all;
                 }
             }
         }
