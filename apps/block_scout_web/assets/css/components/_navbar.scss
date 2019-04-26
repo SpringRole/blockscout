@@ -10,9 +10,17 @@
 .navbar-primary {
   background-color: #fff !important;
   padding: 0;
-
+  @media (max-width: 768px) {
+    padding: 16px 0;
+  }
   &.navbar-dark .navbar-nav .nav-link {
     color: #4a4a4a;
+    @media (max-width: 768px) {
+      color: #808080;
+      .nav-link-icon{
+
+      }
+    }
 
     &:hover,
     &:focus {
@@ -45,6 +53,12 @@
     padding: 16px 0;
     @media (max-width: 768px) {
       padding: 14px 20px;
+      .navbar-brand{
+        padding-left: 20px;
+      }
+      .navbar-toggler{
+        padding-right: 20px;
+      }
     }
   }
 }
@@ -58,10 +72,17 @@
     order: -1;
     width: 100%;
     align-items: center;
-
+    @media (max-width: 768px) {
+      border-bottom: 1px solid #d2d2d2;
+      margin-bottom: 16px;
+    }
     form {
       flex-grow: 1;
+      @media (max-width: 768px) {
+        margin: 0 !important;
+      }
     }
+    
   }
 
   .input-group {
@@ -90,6 +111,13 @@
 
 .navbar .nav-item {
   font-size: 14px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.33;
+    text-align: left;
+    color: #808080;
+  }
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -110,6 +138,9 @@
   width: 12px;
   path {
     fill: #4a4a4a;
+    @media (max-width: 768px) {
+      fill: #808080;
+    }
   }
 }
 
@@ -198,15 +229,19 @@
 }
 .navbar-primary{
     .container{
+      @media (max-width: 768px) {
+        padding: 0;
+      }
         a{
           padding: 0;
-            h1{
-              color: #393e48;
-              font-size: 16px;
-              line-height: 1.31;
-              margin: 0 !important;
-              font-weight: 400;
-            }
+          h1{
+            color: #393e48;
+            font-size: 16px;
+            line-height: 1.31;
+            margin: 0 !important;
+            font-weight: 400;
+          }
+          
         }
     }
 }
@@ -215,9 +250,8 @@
   position: relative;
   margin-right: 48px;
   @media (max-width: 768px) {
-    width: 100%;
-    margin-right: 0;
-    margin-top: 16px;
+    width: calc(100% - 40px);
+    margin: 16px auto;
   }
   input{
     width: 340px;
@@ -271,6 +305,34 @@
     span{
       i{
         font-size: medium;
+      }
+    }
+  }
+}
+
+#navbarSupportedContent{
+  .navbar-nav{
+    @media (max-width: 768px) {
+      padding: 0 20px;
+      width: 100%;
+      li{
+        padding-bottom: 18px;
+        border-bottom: 1px solid #d2d2d2;
+        margin-bottom: 20px;
+        .dropdown-menu{
+          box-shadow: none;
+          border: 0;
+          border-top: 1px solid #d2d2d2;
+          margin-top: 20px;
+          .dropdown-item{
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 18px;
+            &:first-child{
+              padding-top: 20px;
+            }
+          }
+        }
       }
     }
   }
