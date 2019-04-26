@@ -331,6 +331,11 @@
             &:first-child{
               padding-top: 20px;
             }
+            span{
+              img{
+                width: 12px;
+              }
+            }
           }
         }
       }
