@@ -24,7 +24,9 @@ export const initialState = {
   transactionsError: false,
   transactionsLoading: true,
   transactionCount: null,
-  usdMarketCap: null
+  usdMarketCap: null,
+  attestationCount:null,
+  vanityCount: null
 }
 
 export const reducer = withMissingBlocks(baseReducer)
@@ -76,10 +78,22 @@ function baseReducer (state = initialState, action) {
     case 'RECEIVED_NEW_TRANSACTION_BATCH': {
       if (state.channelDisconnected) return state
 
-      const transactionCount = state.transactionCount + action.msgs.length
+      const transactionCount = state.transactionCount + action.msgs.length;
+      var attestationCount;
+      var vanityCount;
+      for(i = 0; i < action.msgs; i++){
+        if(action.msgs.transactionHash == "0x793B214053B72A967077364af5eF3d32d32CE9Ea") {
+          attestationCount = state.attestationCount + 1
+        }
+
+        if(action.msgs.transactionCount == "0x76a8F13c42fa41dB608b2beE23e73f1Dbe540cD5") {
+          vanityCount = state.vanityCount + 1;
+        }
+      }
+      
 
       if (state.transactionsLoading || state.transactionsError) {
-        return Object.assign({}, state, { transactionCount })
+        return Object.assign({}, state, { transactionCount, attestationCount, vanityCount })
       }
 
       if (!state.transactionsBatch.length && action.msgs.length < BATCH_THRESHOLD) {
@@ -88,7 +102,9 @@ function baseReducer (state = initialState, action) {
             ...action.msgs.reverse(),
             ...state.transactions.slice(0, -1 * action.msgs.length)
           ],
-          transactionCount
+          transactionCount,
+          attestationCount,
+          vanityCount
         })
       } else {
         return Object.assign({}, state, {
@@ -96,7 +112,9 @@ function baseReducer (state = initialState, action) {
             ...action.msgs.reverse(),
             ...state.transactionsBatch
           ],
-          transactionCount
+          transactionCount,
+          attestationCount,
+          vanityCount
         })
       }
     }
@@ -156,6 +174,24 @@ const elements = {
     render ($el, state, oldState) {
       if (oldState.addressCount === state.addressCount) return
       $el.empty().append(state.addressCount)
+    }
+  },
+  '[data-selector="attestation-count"]': {
+    load ($el) {
+      return { attestationCount: numeral($el.text()).value() }
+    },
+    render ($el, state, oldState) {
+      if (oldState.attestationCount === state.attestationCount) return
+      $el.empty().append(numeral(state.attestationCount).format())
+    }
+  },
+  '[data-selector="vanity-count"]': {
+    load ($el) {
+      return { transactionCount: numeral($el.text()).value() }
+    },
+    render ($el, state, oldState) {
+      if (oldState.vanityCount === state.vanityCount) return
+      $el.empty().append(numeral(state.vanityCount).format())
     }
   },
   '[data-selector="average-block-time"]': {

@@ -61,6 +61,34 @@
             <%= Cldr.Number.to_string!(@address_count, format: "#,###") %>
           </span>
         </div>
+
+        <div class="dashboard-banner-network-stats-item">
+          <span class="dashboard-banner-network-stats-label">
+            <%= gettext "Attestation transactions" %>
+          </span>
+          <span class="dashboard-banner-network-stats-value" data-selector="attestation-count">
+            <%= Cldr.Number.to_string!(@attestation_count, format: "#,###") %>
+          </span>
+        </div>
+
+        <div class="dashboard-banner-network-stats-item">
+          <span class="dashboard-banner-network-stats-label">
+            <%= gettext "Vanity transactions" %>
+          </span>
+          <span class="dashboard-banner-network-stats-value" data-selector="vanity-count">
+            <%= Cldr.Number.to_string!(@vanity_count, format: "#,###") %>
+          </span>
+        </div>
+
+        <div class="dashboard-banner-network-stats-item">
+          <span class="dashboard-banner-network-stats-label">
+            <%= gettext "Ttransaction time" %>
+          </span>
+          <span class="dashboard-banner-network-stats-value" data-selector="transaction-time">
+            <%= Cldr.Number.to_string!(@transaction_time, format: "#,###") %>
+          </span>
+        </div>
+
       </div>
     </div>
   </div>
