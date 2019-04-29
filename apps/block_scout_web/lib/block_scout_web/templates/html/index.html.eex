@@ -1,180 +1,275 @@
 <div class="container transactionContainer">
-    <div class="transactionCountBar">
-        <div class="transactionViewsParent">
-
-            <div class="transactionViews">
-                <div class="transactionHeader">
-                    <h3>Last Transaction</h3>
-                </div>
-                <div class="transactionCountValues">
-                    <h1>54<span>minutes</span></h1>
-                    <h1>33<span>seconds ago</span></h1>
-                </div>
-                <div class="viewTransactionLink">
-                    <p>View Transaction
-                        <span><img src="<%= static_path(@conn, "/images/viewWhite.svg") %>"></span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="transactionViews transactionViewSimilar">
-                <div class="transactionHeader">
-                    <h3>Total transactions</h3>
-                </div>
-                <div class="transactionCountValues">
-                    <h1>4,805</h1>
-                </div>
-            </div>
-
-            <div class="transactionViews transactionViewSimilar">
-                <div class="transactionHeader">
-                    <h3>Vanity verified</h3>
-                </div>
-                <div class="transactionCountValues">
-                    <h1>2,500</h1>
-                </div>
-            </div>
-
-            <div class="transactionViews transactionViewSimilar">
-                <div class="transactionHeader">
-                    <h3>Work Exp verified</h3>
-                </div>
-                <div class="transactionCountValues">
-                    <h1>2,305</h1>
-                </div>
-            </div>
-
-        </div>  
-    </div>
-
-    <div class="blockscoutCard blockscoutCardTransactionView">
+    <div class="blockscoutCard">
 
         <div class="blockscoutHeader">
             <div class="blockscoutHeaderInner">
-                <h2>Transactions</h2>
-                <div class="viewAllTransactionLink">
-                    <h4>View all Transactions
-                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
-                    </h4>
+            <h2>Transaction Details</h2>
+            </div>
+        </div>
+
+        <div class="transactionDetails">
+            <div class="transactionDetailsContentLeft">
+
+                <div class="transactionDetailsAttested">
+                    <h3>Edward Nigma has attested to Oswald Cobblepot’s work experience as Product Manager in Hudson Group.</h3>
+                </div>
+
+                <div class="transactionDetailsType_Stamp">
+                    <div class="transactionDetailsType_StampInner">
+                        <h5>Transaction Type</h5>
+                        <p>Work Experience Verification</p>
+                    </div>
+                    <div class="transactionDetailsType_StampInner type_StampInnerValues">
+                        <h5>Time Stamp</h5>
+                        <p>31 DEC 2018 | 19:15:34</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="transactionDetailsContentRight">
+
+                <div class="attestorVerifierParent">
+                    <div class="attestorVerifier">
+                        <div class="attestorVerifierAvatar">
+                            <img src="<%= static_path(@conn, "/images/avatar.jpeg") %>">
+                            <h6>Attestor</h6>
+                        </div>
+                        <div class="attestorVerifierDetails">
+                            <h3>Edward Nigma</h3>
+                            <h4>Product Head</<h4>
+                            <p>Hudson Group, Hyderabad,</p>
+                            <p>India</p>
+                        </div>    
+                    </div>
+                </div>
+
+                <div class="attestorVerifierParent attestorVerifierLastparent">
+                    <div class="attestorVerifier">
+                        <div class="attestorVerifierAvatar">
+                            <img src="<%= static_path(@conn, "/images/avatar.jpeg") %>">
+                            <h6>Verifier</h6>
+                        </div>
+                        <div class="attestorVerifierDetails">
+                            <h3>Edward Nigma</h3>
+                            <h4>Product Head</<h4>
+                            <p>Hudson Group, Hyderabad,</p>
+                            <p>India</p>
+                        </div>    
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="trasactionStatusViewParent">
-            <div class="trasactionStatus transactionSuccess">
-                <div class="transactionStatusLable">
-                    <h6>Work experience verification</h6>
-                    <p>SUCCESS</p>
-                </div>
-                <div class="transactionStatusDesctiption">
-                    <h5><span>Shivhari Shankar</span> has attested to <span>Linu LD’s</span> work experience as Sr. Product Designer in SpringRole.</h5>
-                    <span>
-                        <a href="#">View Details
-                            <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
-                        </a>
-                    </span>
-                </div>
-            </div>
-            <div class="transactionTime">
-                <p>1 hr ago</p>
-            </div>
-        </div>
-
-        <div class="trasactionStatusViewParent">
-            <div class="trasactionStatus transactionFailed">
-                <div class="transactionStatusLable">
-                    <h6>Work experience verification</h6>
-                    <p>FAILED</p>
-                </div>
-                <div class="transactionStatusDesctiption">
-                    <h5><span>Shivhari Shankar</span> has attested to <span>Linu LD’s</span> work experience as Sr. Product Designer in SpringRole.</h5>
-                    <span>
-                        <a href="#">View Details
-                            <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
-                        </a>
-                    </span>
-                </div>
-            </div>
-            <div class="transactionTime">
-                <p>1 hr ago</p>
+        <div class="transactionValues">
+            <div class="transactionlabel">
+                <p>Block Number</p>
+                <p>Block Confirmations</p>
+                <p>Nonce</p>
+            </div> 
+            <div class="transactionlabel transactionCurrentValues">
+                <p>2643180</p>
+                <p>0x7ebc6b6879d07f8a60b725215eaefef6c421ab83</p>
+                <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
             </div>
         </div>
     </div>
 
-
-    <div class="blockscoutCard blockscoutCardTransactionView">
-
+        
+    <div class="blockscoutCard detailsInputLogs">
         <div class="blockscoutHeader">
             <div class="blockscoutHeaderInner">
-                <h2>Contracts</h2>
-            </div>
-        </div>
-
-        <div class="transactionContacts">
-            <div class="transactionContactsBar">
-                <div class="transactionContactsLable">
-                    <h5>Work experience verification</h6>
-                    <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
-                </div>
-                <div class="transactionContactsLable transactionContactsValues">
-                    <h5>Last transaction </h5>
-                    <p>14 days ago</p>
+                <h2>Blockchain Details</h2>
+                <div class="viewDetailsParent blockchainViewDetailsParent">
+                    <span id="viewDetails">View Details</span>
+                    <span id="viewDetailsIcon"><i class="fas fa-angle-down"></i></span>
                 </div>
             </div>
         </div>
-
-        <div class="transactionContacts">
-            <div class="transactionContactsBar">
-                <div class="transactionContactsLable">
-                    <h5>Work experience verification</h6>
-                    <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
+        
+        <div class="blockchainDetailsContentParent">
+            <div class="blockchainDetailsContent">
+                <div class="blockchainDetailsContentLeft">
+                    <div class="blockchainDetailsContentInner">
+                        <div class="blockchainLable">
+                            <p>Block Number</p>
+                            <p>Block Confirmations</p>
+                            <p>Nonce</p>
+                        </div>
+                        <div class="blockchainLable blockchainvalues">
+                            <p>2643180</p>
+                            <p>68</p>
+                            <p>2</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="transactionContactsLable transactionContactsValues">
-                    <h5>Last transaction </h5>
-                    <p>14 days ago</p>
+
+                <div class="blockchainDetailsContentRight">
+                    <div class="blcokchainSpringValues">
+                        <div class="blcokchainSpringValueslabel">
+                            <p>Spring Value</p>
+                            <p>TX Fee</p>
+                            <p>Gas</p>
+                        </div>
+                        <div class="blcokchainSpringValuesCurrentValues">
+                            <p>0 SPRING ($0.000000 USD)</p>
+                            <p>0 SPRING ($0.000000 USD) </p>
+                            <p>Used 162,839 @ 0 Gwei
+                            <br>Limit 4,653,000 </p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="rawInput">
+                <div class="rawInputlable">
+                    <p>Raw Input</p>
+                </div>
+                <div class="rawInputValueParent">
+                    <button>Show Raw Input</button>
+                    <div class="rawInputValue">
+                        <textarea id="scrollBar" readonly>0x582295910000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000056272696e7300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000255535643665663230372d643963392d346532662d393033392d323039326239326265663530000000000000000000000000000000000000000000000000000000</textarea>
+                        <div class="rawInputValueIcons">
+                            <img src="<%= static_path(@conn, "/images/cross.svg") %>"><br>
+                            <img src="<%= static_path(@conn, "/images/edit.svg") %>">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div class="blockscoutCard blockscoutCardTransactionView">
-
+    
+    
+    
+    <div class="blockscoutCard detailsInputLogs">
         <div class="blockscoutHeader">
             <div class="blockscoutHeaderInner">
-                <h2>Blocks</h2>
-                <div class="viewAllTransactionLink">
-                    <h4>View all Blocks
-                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
-                    </h4>
+                <h2>Input</h2>
+                <div class="viewDetailsParent inputViewDetailsParent">
+                    <span id="inputViewDetails">View Details</span>
+                    <span id="inputviewDetailsIcon"><i class="fas fa-angle-down"></i></span>
                 </div>
             </div>
         </div>
 
-        <div class="transactionBlocksParent">
-            <div class="transactionBlocks">
-                <h4>2564567</h4>
-                <h5>0 Transations<span>10 Days ago</span></h5>
-                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+        <div class="blockchainInputContent">
+            <div class="blockchainInput">
+                <div class="blockchainIDCallLabel">
+                    <p>Method Id</p>
+                    <p>Call</p>
+                </div>
+                <div class="blockchainIDCallLabel blockchainIDCallvalues">
+                    <p>0x58229591</p>
+                    <p>reserve(string _vanity_url, string _springrole_id)</p>
+                </div>
             </div>
-        
-            <div class="transactionBlocks">
-                <h4>2564567</h4>
-                <h5>0 Transations<span>10 Days ago</span></h5>
-                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
-            </div>
-        
-            <div class="transactionBlocks">
-                <h4>2564567</h4>
-                <h5>0 Transations<span>10 Days ago</span></h5>
-                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
-            </div>
-        
-            <div class="transactionBlocks">
-                <h4>2564567</h4>
-                <h5>0 Transations<span>10 Days ago</span></h5>
-                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+
+            <div class="blockchainInputTable">
+                <table style="width:100%">
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th> 
+                        <th>Data</th>
+                    </tr>
+                    <tr>
+                        <td>31 - DEC - 2018</td>
+                        <td>string</td> 
+                        <td class="tdEditIcon">brins<img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
+                    </tr>
+                    <tr>
+                        <td>19:15:34</td>
+                        <td>string</td> 
+                        <td class="tdEditIcon">U5d6ef207-d9c9-4e2f-9039-2092b92bef50 <img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
+                    </tr>
+                </table>
             </div>
         </div>
-       
     </div>
+
+
+
+    <div class="blockscoutCard detailsInputLogs">
+        <div class="blockscoutHeader">
+            <div class="blockscoutHeaderInner">
+                <h2>Logs</h2>
+                <div class="viewDetailsParent logViewDetailsParent">
+                    <span id="logviewDetails">View Details</span>
+                    <span id="LogviewDetailsIcon"><i class="fas fa-angle-down"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="blockchianLogAddress">
+          
+            <div class="logAddress">
+                <div class="logAddressLabel">
+                    <p>Address</p>
+                </div>
+                <div class="logAddressLabel logAddressValue">
+                    <p>0x7ebc6b6879d07f8a60b725215eaefef6c421ab83</p>
+                </div>
+            </div>
+
+            <div class="decoded">
+                <div class="decodedLabel">
+                    <p>Decoded</p>
+                </div>
+                <div class="decodedTable">
+                    <div class="customTableParticular">
+                        <div>
+                            <table style="width:100%; margin-bottom: 30px;">
+                                <tr>
+                                    <td>Method Id</td>
+                                    <td>Call</td>
+                                </tr>
+                                <tr>
+                                    <td>0x762ffc42</td>
+                                    <td>VanityReserved(address _to, string _vanity_url)</td> 
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="userTable" style="width:100%">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th> 
+                                    <th>Indexed?</th>
+                                    <th>Data</th>
+                                </tr>
+                                <tr>
+                                    <td>_to</td>
+                                    <td>address</td> 
+                                    <td>false</td> 
+                                    <td class="tdEditIcon txtColorBlue">0x1ba37e38496a2fc94b8ba011c91d11fece948b16<img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
+                                </tr>
+                                <tr>
+                                    <td>_vanity_url</td>
+                                    <td>string</td> 
+                                    <td>false</td> 
+                                    <td class="tdEditIcon">brins <img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="LogsTopic">
+                <div class="LogsTopicLabel">
+                    <p>Topic</p>
+                </div>
+                <div class="LogsTopicValues">
+                    <p>[0] 0x762ffc42e32a1438e72ead545922b834fbdbb79a0547b358a3418bfe286b25b7 <img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
+                </div>
+            </div>
+
+            <div class="LogsTopic LogsData">
+                <div class="LogsTopicLabel">
+                    <p>Data</p>
+                </div>
+                <div class="LogsTopicValues">
+                    <p>0x0000000000000000000000001ba37e38496a2fc94b8ba011c91d11fece948b16000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000056272696e73000000000000000000000000000000000000000000000000000000  <img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
+                </div>
+            </div>
+        </div>
+    </div>  
 </div>

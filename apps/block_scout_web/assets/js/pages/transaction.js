@@ -65,13 +65,49 @@ if ($transactionDetailsPage.length) {
 //Code that needs to be applied starts here
 
 $(document).ready(function(){
-  $("#viewDetails").click(function(){
+  
+  $("#viewDetailsIcon i").click(function(){
     $(".blockchainDetailsContentParent").slideToggle("slow");
   });
 
-  $("#viewDetails").click(function(){
-    $(this).text($(this).text() == 'View Details' ? 'Hide Details' : 'View Details');
+  $(".blockchainViewDetailsParent").click(function(){
+    $("#viewDetailsIcon i").toggleClass("rotate"); 
+   });
+
+  $("#viewDetailsIcon i").click(function(){
+    $("#viewDetails").text($("#viewDetails").text() == 'View Details' ? 'Hide Details' : 'View Details');
   });
+  
+});
+
+$(document).ready(function(){
+  $("#inputviewDetailsIcon i").click(function(){
+    $(".blockchainInputContent").slideToggle("slow");
+  });
+
+  $(".inputViewDetailsParent").click(function(){
+    $("#inputviewDetailsIcon i").toggleClass("rotate"); 
+   });
+
+  $("#inputviewDetailsIcon i").click(function(){
+    $("#inputViewDetails").text($("#inputViewDetails").text() == 'View Details' ? 'Hide Details' : 'View Details');
+  });
+
+});
+
+$(document).ready(function(){
+  $("#LogviewDetailsIcon i").click(function(){
+    $(".blockchianLogAddress").slideToggle("slow");
+  });
+
+  $(".logViewDetailsParent").click(function(){
+    $("#LogviewDetailsIcon i").toggleClass("rotate"); 
+   });
+
+   $("#LogviewDetailsIcon i").click(function(){
+    $("#logviewDetails").text($("#logviewDetails").text() == 'View Details' ? 'Hide Details' : 'View Details');
+  });
+
 });
 
 //Code that needs to be applied ends here
