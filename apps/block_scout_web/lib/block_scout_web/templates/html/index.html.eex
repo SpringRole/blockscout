@@ -56,6 +56,9 @@
                     <h4>View all Transactions
                         <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
                     </h4>
+                    <h4>View all
+                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                    </h4>
                 </div>
             </div>
         </div>
