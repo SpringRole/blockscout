@@ -1,13 +1,17 @@
 defmodule BlockScoutWeb.HtmlController do
     use BlockScoutWeb, :controller
     alias Phoenix.View
-    alias Explorer.Stats
+    alias BlockScoutWeb.Call
+
+    response = Call.api_call()
+
 
     def index(conn, _params) do
         render(
             conn,
-            "index.html",
+            "test_transaction.html",
             current_path: current_path(conn),
+            response: response
         )
     end
 

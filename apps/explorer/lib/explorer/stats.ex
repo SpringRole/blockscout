@@ -34,7 +34,8 @@ defmodule Explorer.Stats do
                 limit: 1
         )
         
-       NaiveDateTime.diff(NaiveDateTime.utc_now ,Repo.one(query))/60
+       #NaiveDateTime.diff(NaiveDateTime.utc_now, Repo.one(query))/60
+       0
     end
 
     
