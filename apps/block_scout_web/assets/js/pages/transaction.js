@@ -110,4 +110,17 @@ $(document).ready(function(){
 
 });
 
+$(document).ready(function(){
+  $(".dark-blue-text i").click(function(){
+    $(".blockchainDetailsContentParent").slideToggle("slow");
+  });
+
+  $("#viewDetails").click(function(){
+    $(this).text($(this).text() == 'View Details' ? 'Hide Details' : 'View Details');
+  });
+});
+
+$('.dark-blue-text i').click(function() {
+  $(this).toggleClass("fa-times");
+});  
 //Code that needs to be applied ends here
