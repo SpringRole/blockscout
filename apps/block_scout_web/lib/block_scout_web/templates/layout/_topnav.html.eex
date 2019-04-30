@@ -9,7 +9,8 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
     aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
     <span class="dark-blue-text">
-      <i class="fas fa-bars fa-1x"></i></span>
+      <i class="fas fa-bars"></i>
+    </span>
     </button>
 
 
@@ -54,12 +55,15 @@
           <div class="dropdown-menu" aria-labelledby="navbarBlocksDropdown">
             <%= link to: block_path(@conn, :index), class: "dropdown-item" do %>
               <%= gettext("Blocks") %>
+              <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
             <% end %>
             <%= link to: uncle_path(@conn, :uncle), class: "dropdown-item" do %>
               <%= gettext("Uncles") %>
+              <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
             <% end %>
             <%= link to: reorg_path(@conn, :reorg), class: "dropdown-item" do %>
               <%= gettext("Forked Blocks (Reorgs)") %>
+              <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
             <% end %>
           </div>
         </li>
@@ -72,8 +76,7 @@
           </a>
           <div class="dropdown-menu" aria-labeledby="navbarTransactionsDropdown">
             <%= link(
-                  gettext("Validated"),
-                  class: "dropdown-item",
+                  gettext("Validated"), class: "dropdown-item",
                   to: transaction_path(@conn, :index)
                 ) %>
             <%= link(

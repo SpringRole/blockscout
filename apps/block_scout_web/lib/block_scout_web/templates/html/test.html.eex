@@ -1,0 +1,9 @@
+<%# <section class="container" data-page="stats">
+    <div class="card">
+        <div class="card-body" data-async-listing="<%= @current_path %>">
+            <%# <h3><%= inspect(display_response())%></h3>
+           
+            
+        </div>
+    </div>
+</section> %> %>

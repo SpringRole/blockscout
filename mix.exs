@@ -66,7 +66,11 @@ defmodule BlockScout.Mixfile do
       # Documentation
       {:ex_doc, "~> 0.19.0", only: [:dev]},
       # Code coverage
-      {:excoveralls, "~> 0.10.0", only: [:test], github: "KronicDeth/excoveralls", branch: "circle-workflows"}
+      {:excoveralls, "~> 0.10.0", only: [:test], github: "KronicDeth/excoveralls", branch: "circle-workflows"},
+      {:tesla, "~> 1.2.0"},
+      {:jason, ">= 1.0.0"}, # optional, required by JSON middleware
+      {:json, "~> 1.2"}
+   
     ]
   end
 end

@@ -1,1 +1,183 @@
-<%= @response %>
+<div class="container transactionContainer">
+    <div class="transactionCountBar">
+        <div class="transactionViewsParent">
+
+            <div class="transactionViews">
+                <div class="transactionHeader">
+                    <h3>Last Transaction</h3>
+                </div>
+                <div class="transactionCountValues">
+                    <h1>54<span>minutes</span></h1>
+                    <h1>33<span>seconds ago</span></h1>
+                </div>
+                <div class="viewTransactionLink">
+                    <p>View Transaction
+                        <span><img src="<%= static_path(@conn, "/images/viewWhite.svg") %>"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="transactionViews transactionViewSimilar">
+                <div class="transactionHeader">
+                    <h3>Total transactions</h3>
+                </div>
+                <div class="transactionCountValues">
+                    <h1>4,805</h1>
+                </div>
+            </div>
+
+            <div class="transactionViews transactionViewSimilar">
+                <div class="transactionHeader">
+                    <h3>Vanity verified</h3>
+                </div>
+                <div class="transactionCountValues">
+                    <h1>2,500</h1>
+                </div>
+            </div>
+
+            <div class="transactionViews transactionViewSimilar">
+                <div class="transactionHeader">
+                    <h3>Work Exp verified</h3>
+                </div>
+                <div class="transactionCountValues">
+                    <h1>2,305</h1>
+                </div>
+            </div>
+
+        </div>  
+    </div>
+
+    <div class="blockscoutCard blockscoutCardTransactionView">
+
+        <div class="blockscoutHeader">
+            <div class="blockscoutHeaderInner">
+                <h2>Transactions</h2>
+                <div class="viewAllTransactionLink">
+                    <h4>View all Transactions
+                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                    </h4>
+                    <h4>View all
+                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="trasactionStatusViewParent">
+            <div class="trasactionStatus transactionSuccess">
+                <div class="transactionStatusLable">
+                    <h6>Work experience verification</h6>
+                    <p>SUCCESS</p>
+                </div>
+                <div class="transactionStatusDesctiption">
+                    <h5><span>Shivhari Shankar</span> has attested to <span>Linu LD’s</span> work experience as Sr. Product Designer in SpringRole.</h5>
+                    <span>
+                        <a href="#">View Details
+                            <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+            <div class="transactionTime">
+                <p>1 hr ago</p>
+            </div>
+        </div>
+
+        <div class="trasactionStatusViewParent">
+            <div class="trasactionStatus transactionFailed">
+                <div class="transactionStatusLable">
+                    <h6>Work experience verification</h6>
+                    <p>FAILED</p>
+                </div>
+                <div class="transactionStatusDesctiption">
+                    <h5><span>Shivhari Shankar</span> has attested to <span>Linu LD’s</span> work experience as Sr. Product Designer in SpringRole.</h5>
+                    <span>
+                        <a href="#">View Details
+                            <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+            <div class="transactionTime">
+                <p>1 hr ago</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="blockscoutCard blockscoutCardTransactionView">
+
+        <div class="blockscoutHeader">
+            <div class="blockscoutHeaderInner">
+                <h2>Contracts</h2>
+            </div>
+        </div>
+
+        <div class="transactionContacts">
+            <div class="transactionContactsBar">
+                <div class="transactionContactsLable">
+                    <h5>Work experience verification</h6>
+                    <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
+                </div>
+                <div class="transactionContactsLable transactionContactsValues">
+                    <h5>Last transaction </h5>
+                    <p>14 days ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactionContacts">
+            <div class="transactionContactsBar">
+                <div class="transactionContactsLable">
+                    <h5>Work experience verification</h6>
+                    <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
+                </div>
+                <div class="transactionContactsLable transactionContactsValues">
+                    <h5>Last transaction </h5>
+                    <p>14 days ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blockscoutCard blockscoutCardTransactionView">
+
+        <div class="blockscoutHeader">
+            <div class="blockscoutHeaderInner">
+                <h2>Blocks</h2>
+                <div class="viewAllTransactionLink">
+                    <h4>View all Blocks
+                        <span><img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="transactionBlocksParent">
+            <div class="transactionBlocks">
+                <h4>2564567</h4>
+                <h5>0 Transations<span>10 Days ago</span></h5>
+                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+            </div>
+        
+            <div class="transactionBlocks">
+                <h4>2564567</h4>
+                <h5>0 Transations<span>10 Days ago</span></h5>
+                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+            </div>
+        
+            <div class="transactionBlocks">
+                <h4>2564567</h4>
+                <h5>0 Transations<span>10 Days ago</span></h5>
+                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+            </div>
+        
+            <div class="transactionBlocks">
+                <h4>2564567</h4>
+                <h5>0 Transations<span>10 Days ago</span></h5>
+                <p>Miner:<span> 0x8hv57hevf67ubvr57acb..</span></p>
+            </div>
+        </div>
+       
+    </div>
+</div>

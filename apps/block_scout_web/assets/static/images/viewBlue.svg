@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="11px" viewBox="0 0 16 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>View All</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Final" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Sr-Web-BlockExp-Landing" transform="translate(-1230.000000, -278.000000)">
+            <g id="Group-2-Copy" transform="translate(150.000000, 241.000000)">
+                <g id="View-all" transform="translate(1088.000000, 43.000000) scale(-1, 1) translate(-1088.000000, -43.000000) translate(1076.000000, 31.000000)">
+                    <g id="Back">
+                        <rect id="Rectangle-4" x="0" y="0" width="24" height="24"></rect>
+                        <g id="arrows-slim-left" transform="translate(5.000000, 7.000000)" stroke="#004FC1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                            <path d="M13.5,4.5 L1.5,4.5" id="Shape"></path>
+                            <polyline id="Shape" points="4 0 0 4.4 4 8.8"></polyline>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

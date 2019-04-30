@@ -1,11 +1,8 @@
-defmodule BlockScoutWeb.GOT do
-   
-    plug(Tesla.Middleware.BaseURL, "http://localhost:3010/blockscout/api/v2/")
-    plug(Tesla.Middleware.JSON)
-
+defmodule BlockScoutWeb.Call do
+  
 
     def single_transaction(transaction_hash) do
-        get("Transactions/" <> transaction_hash)
+        Tesla.get("http://localhost:3010/blockscout/api/v2/Transactions/" <> transaction_hash)
     end
 
     def api_call() do
