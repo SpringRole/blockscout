@@ -8,7 +8,7 @@ defmodule Explorer.Stats do
     
     def attestation_count() do
         query = from(l in "logs",
-                where: l.address_hash == "\\x4b9203cdfc252895172b602b096ab417a7c3004c",
+                where: l.address_hash == "\\x793B214053B72A967077364af5eF3d32d32CE9Ea",
                 select: count("*")
         )
 
@@ -19,7 +19,7 @@ defmodule Explorer.Stats do
     
     def vanity_count() do
         query = from(l in "logs",
-                where: l.address_hash == "\\x8cafc3eb956b95a3a0bccbc31cedd8042b2c45a8",
+                where: l.address_hash == "\\x76a8F13c42fa41dB608b2beE23e73f1Dbe540cD5",
                 select: count("*")
         )
 
@@ -28,7 +28,7 @@ defmodule Explorer.Stats do
 
     def transaction_time() do
         query = from(l in "logs",
-                where: l.address_hash == "\\x4b9203cdfc252895172b602b096ab417a7c3004c" or l.address_hash == "\\x8cafc3eb956b95a3a0bccbc31cedd8042b2c45a8",
+                where: l.address_hash == "\\x793B214053B72A967077364af5eF3d32d32CE9Ea" or l.address_hash == "\\x76a8F13c42fa41dB608b2beE23e73f1Dbe540cD5",
                 select: l.inserted_at,
                 order_by: [desc: l.inserted_at],
                 limit: 1
