@@ -1,13 +1,14 @@
 defmodule BlockScoutWeb.Call do
-  
 
     def single_transaction(transaction_hash) do
-        Tesla.get("http://localhost:3010/blockscout/api/v2/Transactions/" <> transaction_hash)
-    end
-
-    def api_call() do
-        {:ok, response} = single_transaction("0xdbd3b487ff78cfd19e9e4cf07037cc5712db578f211601145508dc04ada6395a")
+        {:ok, response} = Tesla.get("http://localhost:3010/blockscout/api/v2/Transactions/" <> transaction_hash)
         response.body
     end
+
+    def multiple_transactions(transaction_hash_array) do
+        {:ok, response} = Tesla.get("http://localhost:3010/blockscout/api/v2/ViewAllTransactions?transactions=" <> transaction_hash_array)
+        response.body
+    end
+
 
 end

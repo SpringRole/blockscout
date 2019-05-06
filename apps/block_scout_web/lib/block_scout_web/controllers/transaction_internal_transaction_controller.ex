@@ -2,12 +2,12 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
   use BlockScoutWeb, :controller
 
   import BlockScoutWeb.Chain, only: [paging_options: 1, next_page_params: 3, split_list_by_page: 1]
-
+  alias BlockScoutWeb.Call
   alias BlockScoutWeb.TransactionView
   alias Explorer.{Chain, Market}
   alias Explorer.ExchangeRates.Token
-
-  def index(conn, %{"transaction_id" => hash_string} = params) do
+  
+  def index(conn, params = %{"transaction_id" => hash_string}) do
     with {:ok, hash} <- Chain.string_to_transaction_hash(hash_string),
          {:ok, transaction} <-
            Chain.hash_to_transaction(
@@ -37,16 +37,147 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
 
       {internal_transactions, next_page} = split_list_by_page(internal_transactions_plus_one)
 
-      render(
-        conn,
-        "index.html",
-        exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-        internal_transactions: internal_transactions,
-        block_height: Chain.block_height(),
-        show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-        next_page_params: next_page_params(next_page, internal_transactions, params),
-        transaction: transaction
-      )
+    #   render(
+    #     conn,
+    #     "index.html",
+    #     exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+    #     internal_transactions: internal_transactions,
+    #     block_height: Chain.block_height(),
+    #     show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+    #     next_page_params: next_page_params(next_page, internal_transactions, params),
+    #     
+    #   )
+
+
+      {:ok, hash_string} = Map.fetch(params, "transaction_id")
+      response =  Call.single_transaction(hash_string)
+      payload = Jason.decode!(response)
+
+      {:ok, data} = Map.fetch(payload, "data")
+      {:ok, workExResult} = Map.fetch(data, "workExResult")
+
+      if(Map.has_key?(workExResult, "attestingUserDeatils")) do
+
+        {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+        {:ok, transaction} = Map.fetch(workExDetails, "transaction")
+        {:ok, company} = Map.fetch(workExDetails, "company")
+        {:ok, companyName} = Map.fetch(company, "company_name")
+        {:ok, transaction_type} = Map.fetch(transaction, "transaction_type")
+        {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+        {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+        {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
+        {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+        {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
+        {:ok, attestingUserDeatils} = Map.fetch(workExResult, "attestingUserDeatils")
+        {:ok, attestingUserOrCompanyName} = Map.fetch(attestingUserDeatils, "name")
+        {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingUserDeatils, "avatar_url")
+        {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
+        if(length(userHeadLine) == 0) do
+            render(
+                conn,
+                "transactionDetails.html",
+                transaction_type: transaction_type,
+                attestedUserName: attestedUserName,
+                companyName: companyName,
+                attestedUserDesignation: attestedUserDesignation,
+                userHeadLineText: "",
+                userHeadLineCompany: "",
+                userHeadLineLocation: "",
+                attestedUserLogoURL: attestedUserLogoURL,
+                attestingUserOrCompanyName: attestingUserOrCompanyName,
+                attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+                profileHeadlineType: profileHeadlineType
+                transaction: transaction
+            )
+        end
+        {:ok, userHeadLineText} = Map.fetch(hd(userHeadLine), "text")
+        {:ok, userHeadLineLocation} = Map.fetch(hd(userHeadLine), "location_name")
+        {:ok, userHeadLineCompany} = Map.fetch(hd(userHeadLine), "company")
+        
+
+
+        render(
+            conn,
+            "transactionDetails.html",
+            transaction_type: transaction_type,
+            attestedUserName: attestedUserName,
+            companyName: companyName,
+            attestedUserDesignation: attestedUserDesignation,
+            userHeadLineText: userHeadLineText,
+            userHeadLineCompany: userHeadLineCompany,
+            userHeadLineLocation: userHeadLineLocation,
+            attestedUserLogoURL: attestedUserLogoURL,
+            attestingUserOrCompanyName: attestingUserOrCompanyName,
+            attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+            profileHeadlineType: profileHeadlineType,
+            transaction: transaction
+        )
+      end
+
+
+
+      if(Map.has_key?(workExResult, "attestingCompanyDeatils")) do
+
+            
+        {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+        {:ok, transaction} = Map.fetch(workExDetails, "transaction")
+        {:ok, company} = Map.fetch(workExDetails, "company")
+        {:ok, companyName} = Map.fetch(company, "company_name")
+        {:ok, transaction_type} = Map.fetch(transaction, "transaction_type")
+        {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+        {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+        {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
+        {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+        {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
+        {:ok, attestingCompanyDeatils} = Map.fetch(workExResult, "attestingCompanyDeatils")
+        {:ok, attestingUserOrCompanyName} = Map.fetch(attestingCompanyDeatils, "name")
+        {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingCompanyDeatils, "logo_url")
+        {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
+        
+        if(length(userHeadLine) == 0) do
+            render(
+              conn,
+              "transactionDetails.html",
+              transaction_type: transaction_type,
+              attestedUserName: attestedUserName,
+              companyName: companyName,
+              attestedUserDesignation: attestedUserDesignation,
+              userHeadLineText: "",
+              userHeadLineCompany: "",
+              userHeadLineLocation: "",
+              attestedUserLogoURL: attestedUserLogoURL,
+              attestingUserOrCompanyName: attestingUserOrCompanyName,
+              attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+              profileHeadlineType: profileHeadlineType
+              transaction: transaction
+            )
+        end 
+
+        {:ok, userHeadLineText} = Map.fetch(hd(userHeadLine), "text")
+        {:ok, userHeadLineLocation} = Map.fetch(hd(userHeadLine), "location_name")
+        {:ok, userHeadLineCompany} = Map.fetch(hd(userHeadLine), "company")
+
+   
+        render(
+            conn,
+            "transactionDetails.html",
+            transaction_type: transaction_type,
+            attestedUserName: attestedUserName,
+            companyName: companyName,
+            attestedUserDesignation: attestedUserDesignation,
+            userHeadLineText: userHeadLineText,
+            userHeadLineCompany: userHeadLineCompany,
+            userHeadLineLocation: userHeadLineLocation,
+            attestedUserLogoURL: attestedUserLogoURL,
+            attestingUserOrCompanyName: attestingUserOrCompanyName,
+            attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+            profileHeadlineType: profileHeadlineType
+            transaction: transaction
+        )
+    end
+
+
+
     else
       :error ->
         conn

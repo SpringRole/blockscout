@@ -25,8 +25,6 @@ export const initialState = {
     transactionsLoading: true,
     transactionCount: null,
     usdMarketCap: null
-    // attestationCount: null,
-    // vanityCount: null
 };
 
 export const reducer = withMissingBlocks(baseReducer);
@@ -87,17 +85,6 @@ function baseReducer(state = initialState, action) {
 
             const transactionCount =
                 state.transactionCount + action.msgs.length;
-            // const attestationCount;
-            // const vanityCount;
-            //     for(i = 0; i < action.msgs.length; i++){
-            //         if(action.msgs.transactionHash == '') {
-            //             attestationCount = state.attestationCount + 1;
-            //         }
-
-            //         else if(action.msgs.transactionHash == ''){
-            //             vanityCount = state.vanityCount + 1;
-            //         }
-            //     }
 
             if (state.transactionsLoading || state.transactionsError) {
                 return Object.assign({}, state, { transactionCount });
@@ -194,41 +181,6 @@ const elements = {
             $el.empty().append(state.addressCount);
         }
     },
-    // '[data-selector="attestation-count"]': {
-    //     load($el) {
-    //         return {
-    //             attestationCount: numeral($el.text()).value()
-    //         };
-    //     },
-    //     render($el, state) {
-    //         return $el.empty().append(numeral(state.attestationCount).format());
-    //     }
-    // },
-
-    // '[data-selector="vanity-count"]': {
-    //     load($el) {
-    //         return {
-    //             vanityCount: numeral($el.text()).value()
-    //         };
-    //     },
-    //     render($el, state) {
-    //         return $el.empty().append(numeral(state.vanityCount).format());
-    //     }
-    // },
-
-    '[data-selector="transaction-time"]': {
-      load($el) {
-          return {
-              transactionTime: numeral($el.text()).value()
-          };
-      },
-      render($el, state) {
-          return $el.empty().append(numeral(state.transactionTime).format());
-      }
-  },
-
-
-
     '[data-selector="average-block-time"]': {
         render($el, state, oldState) {
             if (oldState.averageBlockTime === state.averageBlockTime) return;

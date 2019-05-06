@@ -83,8 +83,7 @@ defmodule BlockScoutWeb.Router do
 
     get("/stats", StatsController, :index)
 
-    get("/test_html", HtmlController, :index)
-    
+       
     resources("/pending_transactions", PendingTransactionController, only: [:index])
 
     resources("/recent_transactions", RecentTransactionsController, only: [:index])

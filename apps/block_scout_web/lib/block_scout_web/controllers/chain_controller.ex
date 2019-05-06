@@ -15,10 +15,6 @@ defmodule BlockScoutWeb.ChainController do
     attestation_count = Stats.attestation_count()
     vanity_count = Stats.vanity_count()
     transaction_time = Stats.transaction_time()
-<<<<<<< HEAD
-=======
-
->>>>>>> e164f6fb354ed4eb687bdf6928027ca422fe6949
 
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
@@ -34,11 +30,8 @@ defmodule BlockScoutWeb.ChainController do
       attestation_count: attestation_count,
       vanity_count: vanity_count,
       transaction_time: transaction_time
-<<<<<<< HEAD
 
 
-=======
->>>>>>> e164f6fb354ed4eb687bdf6928027ca422fe6949
     )
   end
 
