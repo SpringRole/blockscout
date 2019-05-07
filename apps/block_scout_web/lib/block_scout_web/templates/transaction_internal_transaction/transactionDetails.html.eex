@@ -1,3 +1,4 @@
+
 <div class="container transactionContainer">
     <div class="blockscoutCard">
 
@@ -11,13 +12,13 @@
             <div class="transactionDetailsContentLeft">
 
                 <div class="transactionDetailsAttested">
-                    <h3>Edward Nigma has attested to Oswald Cobblepot’s work experience as Product Manager in Hudson Group.</h3>
+                    <h3><%= @attestingUserOrCompanyName%> has <%= @transaction_type%>ed to <%= @attestedUserName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
                 </div>
 
                 <div class="transactionDetailsType_Stamp">
                     <div class="transactionDetailsType_StampInner">
                         <h5>Transaction Type</h5>
-                        <p>Work Experience Verification</p>
+                        <p><%= @transaction_type  %></p>
                     </div>
                     <div class="transactionDetailsType_StampInner type_StampInnerValues">
                         <h5>Time Stamp</h5>
@@ -31,14 +32,14 @@
                 <div class="attestorVerifierParent">
                     <div class="attestorVerifier">
                         <div class="attestorVerifierAvatar">
-                            <img src="<%= static_path(@conn, "/images/avatar.jpeg") %>">
+                            <img src="<%= @attestedUserLogoURL %>">
                             <h6>Attestor</h6>
                         </div>
                         <div class="attestorVerifierDetails">
-                            <h3>Edward Nigma</h3>
-                            <h4>Product Head</<h4>
-                            <p>Hudson Group, Hyderabad,</p>
-                            <p>India</p>
+                            <h3><%= @attestedUserName%></h3>
+                            <h4><%= @userHeadLineText%></h4>
+                            <p><%= @userHeadLineCompany%> <%= @userHeadLineLocation%></p>
+                            <%# <p>India</p> %>
                         </div>    
                     </div>
                 </div>
@@ -46,14 +47,14 @@
                 <div class="attestorVerifierParent attestorVerifierLastparent">
                     <div class="attestorVerifier">
                         <div class="attestorVerifierAvatar">
-                            <img src="<%= static_path(@conn, "/images/avatar.jpeg") %>">
+                            <img src="<%= @attestingUserOrCompanyLogoURL %>">
                             <h6>Verifier</h6>
                         </div>
                         <div class="attestorVerifierDetails">
-                            <h3>Edward Nigma</h3>
-                            <h4>Product Head</<h4>
+                            <h3><%= @attestingUserOrCompanyName %></h3>
+                            <%# <h4>Product Head</<h4>
                             <p>Hudson Group, Hyderabad,</p>
-                            <p>India</p>
+                            <p>India</p> %>
                         </div>    
                     </div>
                 </div>

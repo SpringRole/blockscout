@@ -8,9 +8,13 @@ defmodule BlockScoutWeb.ChainController do
   alias Explorer.ExchangeRates.Token
   alias Explorer.Market
   alias Phoenix.View
+  alias Explorer.Stats
 
   def show(conn, _params) do
     transaction_estimated_count = Chain.transaction_estimated_count()
+    attestation_count = Stats.attestation_count()
+    vanity_count = Stats.vanity_count()
+    transaction_time = Stats.transaction_time()
 
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
@@ -22,7 +26,12 @@ defmodule BlockScoutWeb.ChainController do
       exchange_rate: exchange_rate,
       chart_data_path: market_history_chart_path(conn, :show),
       transaction_estimated_count: transaction_estimated_count,
-      transactions_path: recent_transactions_path(conn, :index)
+      transactions_path: recent_transactions_path(conn, :index),
+      attestation_count: attestation_count,
+      vanity_count: vanity_count,
+      transaction_time: transaction_time
+
+
     )
   end
 

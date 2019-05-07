@@ -1,14 +1,17 @@
 defmodule BlockScoutWeb.HtmlController do
     use BlockScoutWeb, :controller
     alias Phoenix.View
-    alias Explorer.Stats
+    alias BlockScoutWeb.Call
+    alias BlockScoutWeb.Controllers
+    
 
-    def index(conn, _params) do
-        render(
-            conn,
-            "index.html",
-            current_path: current_path(conn),
-        )
+
+    def show(conn, %{"id" => id}) do
+
+        
+        # redirect(conn, to: Controllers.test_transaction_internal_transaction_path(conn, :index, %{"id" => id}))
+
+
     end
 
 end

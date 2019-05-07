@@ -88,6 +88,8 @@ config :block_scout_web, BlockScoutWeb.Tracer,
   adapter: SpandexDatadog.Adapter,
   trace_key: :blockscout
 
+  config :tesla, adapter: Tesla.Adapter.Hackney
+
 # Configures gettext
 config :block_scout_web, BlockScoutWeb.Gettext, locales: ~w(en), default_locale: "en"
 

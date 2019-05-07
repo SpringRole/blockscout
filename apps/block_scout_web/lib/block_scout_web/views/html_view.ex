@@ -1,20 +1,9 @@
 defmodule BlockScoutWeb.HtmlView do
     use BlockScoutWeb, :view
 
-    alias Explorer.Stats
-
-    def attestationCount() do
-        "Attestation Count: #{Stats.attestation_count()}"
+    alias BlockScoutWeb.Call
+    def test() do
+        Call.api_call()
     end
-
-    def vanityCount() do
-        "Vanity Count: #{Stats.vanity_count()}"
-    end
-
-    def lastTransactionTimeStamp() do
-        "Last Transaction: #{Stats.transaction_time()} minutes ago."
-    end
-
-
-    
+   
 end
