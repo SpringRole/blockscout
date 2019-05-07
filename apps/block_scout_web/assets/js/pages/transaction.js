@@ -66,7 +66,7 @@ if ($transactionDetailsPage.length) {
 
 $(document).ready(function(){
   
-  $("#viewDetailsIcon i").click(function(){
+  $("#viewDetailsIcon i, #viewDetails").click(function(){
     $(".blockchainDetailsContentParent").slideToggle("slow");
   });
 
@@ -81,7 +81,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  $("#inputviewDetailsIcon i").click(function(){
+  $("#inputviewDetailsIcon i, #inputViewDetails").click(function(){
     $(".blockchainInputContent").slideToggle("slow");
   });
 
@@ -96,7 +96,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-  $("#LogviewDetailsIcon i").click(function(){
+  $("#LogviewDetailsIcon i, #logviewDetails").click(function(){
     $(".blockchianLogAddress").slideToggle("slow");
   });
 
