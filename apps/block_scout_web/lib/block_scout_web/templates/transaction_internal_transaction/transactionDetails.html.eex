@@ -12,7 +12,7 @@
             <div class="transactionDetailsContentLeft">
 
                 <div class="transactionDetailsAttested">
-                    <h3><%= @attestingUserOrCompanyName%> has <%= @transaction_type%>ed to <%= @attestedUserName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
+                    <h3><%= @attestingUserOrCompanyFullName%> has <%= @transaction_type%>ed to <%= @attestedUserFullName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
                 </div>
 
                 <div class="transactionDetailsType_Stamp">
@@ -36,7 +36,7 @@
                             <h6>Attestor</h6>
                         </div>
                         <div class="attestorVerifierDetails">
-                            <h3><%= @attestedUserName%></h3>
+                            <h3><%= @attestedUserFullName%></h3>
                             <h4><%= @userHeadLineText%></h4>
                             <p><%= @userHeadLineCompany%> <%= @userHeadLineLocation%></p>
                             <%# <p>India</p> %>
@@ -51,7 +51,7 @@
                             <h6>Verifier</h6>
                         </div>
                         <div class="attestorVerifierDetails">
-                            <h3><%= @attestingUserOrCompanyName %></h3>
+                            <h3><%= @attestingUserOrCompanyFullName %></h3>
                             <%# <h4>Product Head</<h4>
                             <p>Hudson Group, Hyderabad,</p>
                             <p>India</p> %>

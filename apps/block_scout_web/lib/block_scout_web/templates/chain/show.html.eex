@@ -61,56 +61,12 @@
             <%= Cldr.Number.to_string!(@address_count, format: "#,###") %>
           </span>
         </div>
-        <div class="dashboard-banner-network-stats-item">
-          <span class="dashboard-banner-network-stats-label">
-            <%= gettext "Attestation transactions" %>
-          </span>
-          <span class="dashboard-banner-network-stats-value" data-selector="attestation-count">
-            <%= Cldr.Number.to_string!(@attestation_count, format: "#,###") %>
-          </span>
-        </div>
-        <div class="dashboard-banner-network-stats-item">
-          <span class="dashboard-banner-network-stats-label">
-            <%= gettext "Vanity transactions" %>
-          </span>
-          <span class="dashboard-banner-network-stats-value" data-selector="vanity-count">
-            <%= Cldr.Number.to_string!(@vanity_count, format: "#,###") %>
-          </span>
-        </div>
-        <div class="dashboard-banner-network-stats-item">
-          <span class="dashboard-banner-network-stats-label">
-            <%= gettext "Last transaction" %>
-          </span>
-          <span class="dashboard-banner-network-stats-value" data-selector="transaction-time">
-            <%= Cldr.Number.to_string!(@transaction_time, format: "#,###") %>
-          </span>
-        </div>
 
       </div>
     </div>
   </div>
 </div>
 <section class="container">
-  <div class="card card-chain-blocks">
-    <div class="card-body">
-      <%= link(gettext("View All Blocks →"), to: block_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right") %>
-      <h2 class="card-title"><%= gettext "Blocks" %></h2>
-      <div class="row" data-selector="chain-block-list" data-url="<%= chain_blocks_path(@conn, :chain_blocks) %>">
-        <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
-          <span class="alert-link">
-            <%= gettext "Something went wrong, click to reload." %>
-          </span>
-        </button>
-        <div data-selector="loading-message" class="tile tile-muted text-center mt-3 w-100">
-          <span class="loading-spinner-small mr-2">
-            <span class="loading-spinner-block-1"></span>
-            <span class="loading-spinner-block-2"></span>
-          </span>
-          <%= gettext("Loading...") %>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="card card-chain-transactions">
     <div class="card-body">
@@ -137,4 +93,54 @@
       </span>
     </div>
   </div>
+
+
+  <div class="card card-chain-blocks">
+    <div class="card-body">
+      <%= link(gettext("View All Blocks →"), to: block_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right") %>
+      <h2 class="card-title"><%= gettext "Blocks" %></h2>
+      <div class="row" data-selector="chain-block-list" data-url="<%= chain_blocks_path(@conn, :chain_blocks) %>">
+        <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
+          <span class="alert-link">
+            <%= gettext "Something went wrong, click to reload." %>
+          </span>
+        </button>
+        <div data-selector="loading-message" class="tile tile-muted text-center mt-3 w-100">
+          <span class="loading-spinner-small mr-2">
+            <span class="loading-spinner-block-1"></span>
+            <span class="loading-spinner-block-2"></span>
+          </span>
+          <%= gettext("Loading...") %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-chain-contracts">
+    <div class="card-body">
+      <%= link(gettext("View All Contracts →"), to: contract_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right")%>
+      <h2 class="card-title"><%= gettext "Contracts" %></h2>
+      <div data-selector="channel-batching-message" style="display: none;">
+        <div data-selector="reload-button" class="alert alert-info">
+          <a href="#" class="alert-link"><span data-selector="channel-batching-count"></span> <%= gettext "More transactions have come in" %></a>
+        </div>
+      </div>
+      <span data-selector="contracts-list" data-transactions-path="<%= @contracts_path %>">
+        <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
+          <span class="alert-link">
+            <%= gettext "Something went wrong, click to retry." %>
+          </span>
+        </button>
+        <div data-selector="loading-message" class="tile tile-muted text-center mt-3">
+          <span class="loading-spinner-small mr-2">
+            <span class="loading-spinner-block-1"></span>
+            <span class="loading-spinner-block-2"></span>
+          </span>
+          <%= gettext("Loading...") %>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  
 </section>
