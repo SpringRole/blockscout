@@ -1,4 +1,6 @@
-
+<% block = @transaction.block %>
+<% decoded_input_data = decoded_input_data(@transaction) %>
+<% status = transaction_status(@transaction) %>
 <div class="container transactionContainer">
     <div class="blockscoutCard">
 
@@ -12,13 +14,13 @@
             <div class="transactionDetailsContentLeft">
 
                 <div class="transactionDetailsAttested">
-                    <h3><%= @attestingUserOrCompanyFullName%> has <%= @transaction_type%>ed to <%= @attestedUserFullName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
+                    <h3><%= @attestingUserOrCompanyFullName%> has <%= @transactionType%>ed to <%= @attestedUserFullName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
                 </div>
 
                 <div class="transactionDetailsType_Stamp">
                     <div class="transactionDetailsType_StampInner">
                         <h5>Transaction Type</h5>
-                        <p><%= @transaction_type  %></p>
+                        <p><%= @transactionType  %></p>
                     </div>
                     <div class="transactionDetailsType_StampInner type_StampInnerValues">
                         <h5>Time Stamp</h5>
@@ -39,7 +41,7 @@
                             <h3><%= @attestedUserFullName%></h3>
                             <h4><%= @userHeadLineText%></h4>
                             <p><%= @userHeadLineCompany%> <%= @userHeadLineLocation%></p>
-                            <%# <p>India</p> %>
+                           
                         </div>    
                     </div>
                 </div>
@@ -52,9 +54,7 @@
                         </div>
                         <div class="attestorVerifierDetails">
                             <h3><%= @attestingUserOrCompanyFullName %></h3>
-                            <%# <h4>Product Head</<h4>
-                            <p>Hudson Group, Hyderabad,</p>
-                            <p>India</p> %>
+                            
                         </div>    
                     </div>
                 </div>
@@ -64,15 +64,23 @@
         <div class="transactionValues">
             <div class="transactionlabel">
                 <p>Block Number</p>
-                <p>Block Confirmations</p>
-                <p>Nonce</p>
+                <p>Transaction Hash</p>
+                <p>Contract Address</p>
             </div> 
             <div class="transactionlabel transactionCurrentValues">
-                <p>2643180</p>
-                <p>0x7ebc6b6879d07f8a60b725215eaefef6c421ab83</p>
-                <p>0x52bf5fcfdd4c15ae638fc1c029dcd387b8139a7fdc355272cc0fc8cfa2f49030..</p>
+                <p><%= if block do %>
+                <%= link(
+                      block,
+                      class: "transaction__link",
+                      to: block_path(@conn, :show, block)
+                    ) %>
+              <% end %></p>
+                <p><%= @transactionHash %></p>
+                <p>0xe2F6Cca92C16Bbdd99Df98c837b3BC4955184f50</p>
             </div>
         </div>
+            
+        
     </div>
 
         
@@ -86,7 +94,8 @@
                 </div>
             </div>
         </div>
-        
+    
+       
         <div class="blockchainDetailsContentParent">
             <div class="blockchainDetailsContent">
                 <div class="blockchainDetailsContentLeft">
@@ -97,9 +106,16 @@
                             <p>Nonce</p>
                         </div>
                         <div class="blockchainLable blockchainvalues">
-                            <p>2643180</p>
-                            <p>68</p>
-                            <p>2</p>
+                            
+                            <p><%= if block do %>
+                                    <%= link(
+                                        block,
+                                        class: "transaction__link",
+                                        to: block_path(@conn, :show, block)
+                                        ) %>
+                                <% end %></p>
+                            <p><%= confirmations(@transaction, block_height: @block_height) %></p> 
+                            <p> <%= @transaction.nonce %> </p> 
                         </div>
                     </div>
                 </div>
@@ -112,10 +128,12 @@
                             <p>Gas</p>
                         </div>
                         <div class="blcokchainSpringValuesCurrentValues">
-                            <p>0 SPRING ($0.000000 USD)</p>
-                            <p>0 SPRING ($0.000000 USD) </p>
-                            <p>Used 162,839 @ 0 Gwei
-                            <br>Limit 4,653,000 </p>
+                            <p><%= @exchange_rate.usd_value %> USD</p>
+                            <p><%= formatted_fee(@transaction, denomination: :ether) %></p>
+                            <p><%= gettext "Used" %>
+                                <%= gas_used(@transaction) %> @
+                                <%= gas_price(@transaction, :gwei) %>
+                            <br><%= format_gas_limit(@transaction.gas) %> </p>
                         </div>
                     </div>
                 </div>
@@ -127,7 +145,7 @@
                 <div class="rawInputValueParent">
                     <button>Show Raw Input</button>
                     <div class="rawInputValue">
-                        <textarea id="scrollBar" readonly>0x582295910000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000056272696e7300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000255535643665663230372d643963392d346532662d393033392d323039326239326265663530000000000000000000000000000000000000000000000000000000</textarea>
+                        <textarea id="scrollBar" readonly><%= @transaction.input %></textarea>
                         <div class="rawInputValueIcons">
                             <img src="<%= static_path(@conn, "/images/cross.svg") %>"><br>
                             <img src="<%= static_path(@conn, "/images/edit.svg") %>">
@@ -137,6 +155,7 @@
             </div>
 
         </div>
+        
     </div>
     
     
@@ -151,41 +170,133 @@
                 </div>
             </div>
         </div>
-
         <div class="blockchainInputContent">
-            <div class="blockchainInput">
-                <div class="blockchainIDCallLabel">
-                    <p>Method Id</p>
-                    <p>Call</p>
-                </div>
-                <div class="blockchainIDCallLabel blockchainIDCallvalues">
-                    <p>0x58229591</p>
-                    <p>reserve(string _vanity_url, string _springrole_id)</p>
-                </div>
+            <%= case decoded_input_data do%>
+            <% {:error, :contract_not_verified, candidates} -> %>
+            <div class="alert alert-info">
+                <%= gettext "To see accurate decoded input data, the contract must be verified." %>
+                <%= case @transaction do %>
+                <% %{to_address: %{hash: hash}} -> %>
+                    <%= gettext "Verify the contract " %><a href="<%= address_verify_contract_path(@conn, :new, hash)%>"><%= gettext "here" %></a>
+                <% _ -> %>
+                    <%= nil %>
+                <% end %>
             </div>
+            <%= unless Enum.empty?(candidates) do %>
+                <h3><%= gettext "Potential matches from our contract method database:" %></h3>
+                <%= gettext "IMPORTANT: This information is a best guess based on similar functions from other verified contracts." %>
+                <%= gettext "To have guaranteed accuracy, use the link above to verify the contract's source code." %>
 
-            <div class="blockchainInputTable">
-                <table style="width:100%">
-                    <tr>
+                <%= for {:ok, method_id, text, mapping} <- candidates do %>
+                    <hr>
+                    
+                    <div class="blockchainInput">
+                        <div class="blockchainIDCallLabel">
+                            <p>Method Id</p>
+                            <p>Call</p>
+                        </div>
+                        <div class="blockchainIDCallLabel blockchainIDCallvalues">
+                            <p><%= method_id %></p>
+                            <p><%= text%></p>
+                        </div>
+                    </div>
+                <%= unless Enum.empty?(mapping) do %>
+                    <table style="width:100%" summary="<%= gettext "Transaction Inputs" %>" class="table thead-light table-bordered table-responsive">
+                        <tr>
+                        <th scope="col"></th>
                         <th>Name</th>
-                        <th>Type</th> 
+                        <th>Type</th>
                         <th>Data</th>
-                    </tr>
+                        <tr>
+                        <%= for {name, type, value} <- mapping do %>
+                        <tr>
+                            <th scope="row">
+                            <%= case BlockScoutWeb.ABIEncodedValueView.copy_text(type, value) do %>
+                                <% :error -> %>
+                                <%= nil %>
+                                <% copy_text -> %>
+                                <button type="button" class="copy icon-link" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= copy_text %>" aria-label="<%= gettext "Copy Value" %>">
+                                    <i class="fas fa-clone"></i>
+                                </button>
+                            <% end %>
+                            </th>
+                            <td><%= name %></td>
+                            <td><%= type %></td>
+                            <td>
+                            <%= case BlockScoutWeb.ABIEncodedValueView.value_html(type, value) do %>
+                                <% :error -> %>
+                                <div class="alert alert-danger">
+                                    <%= gettext "Error rendering value" %>
+                                </div>
+                                <% value -> %>
+                                <pre class="transaction-input-text tile"><code><%= value %></code></pre>
+                                <% end %>
+                            </td>
+                        </tr>
+                        <% end %>
+                    </table>
+                    <% end %>
+                <% end %>
+            <% end %>
+
+
+
+            <% {:ok, method_id, text, mapping} -> %>
+            <div class="blockchainInput">
+                        <div class="blockchainIDCallLabel">
+                            <p>Method Id</p>
+                            <p>Call</p>
+                        </div>
+                        <div class="blockchainIDCallLabel blockchainIDCallvalues">
+                            <p><%= method_id %></p>
+                            <p><%= text %></p>
+                        </div>
+                </div>
+                <%= unless Enum.empty?(@mapping) do %>
+                <table style="width:100%" summary="<%= gettext "Transaction Inputs" %>" class="table thead-light table-bordered table-responsive">
                     <tr>
-                        <td>31 - DEC - 2018</td>
-                        <td>string</td> 
-                        <td class="tdEditIcon">brins<img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
-                    </tr>
+                    <th scope="col"></th>
+                    <th><%= gettext "Name" %></th>
+                    <th><%= gettext "Type" %></th>
+                    <th><%= gettext "Data" %></th>
                     <tr>
-                        <td>19:15:34</td>
-                        <td>string</td> 
-                        <td class="tdEditIcon">U5d6ef207-d9c9-4e2f-9039-2092b92bef50 <img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
+                    <%= for {name, type, value} <- @mapping do %>
+                    <tr>
+                        <th scope="row">
+                        <%= case BlockScoutWeb.ABIEncodedValueView.copy_text(type, value) do %>
+                            <% :error -> %>
+                            <%= nil %>
+                            <% copy_text -> %>
+                            <button type="button" class="copy icon-link" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= copy_text %>" aria-label="<%= gettext "Copy Value" %>">
+                                <i class="fas fa-clone"></i>
+                            </button>
+                        <% end %>
+                        </th>
+                        <td><%= name %></td>
+                        <td><%= type %></td>
+                        <td>
+                        <%= case BlockScoutWeb.ABIEncodedValueView.value_html(type, value) do %>
+                            <% :error -> %>
+                            <div class="alert alert-danger">
+                                <%= gettext "Error rendering value" %>
+                            </div>
+                            <% value -> %>
+                            <pre class="transaction-input-text tile"><code><%= value %></code></pre>
+                            <% end %>
+                        </td>
                     </tr>
+                    <% end %>
                 </table>
-            </div>
+                <% end %>
+
+            <% _ -> %>
+                <div class="alert alert-danger">
+                <%= gettext "Failed to decode input data." %>
+                </div>
+            <% end %>
+        
         </div>
     </div>
-
 
 
     <div class="blockscoutCard detailsInputLogs">
@@ -200,77 +311,152 @@
         </div>
 
         <div class="blockchianLogAddress">
-          
-            <div class="logAddress">
-                <div class="logAddressLabel">
-                    <p>Address</p>
-                </div>
-                <div class="logAddressLabel logAddressValue">
-                    <p>0x7ebc6b6879d07f8a60b725215eaefef6c421ab83</p>
-                </div>
-            </div>
-
-            <div class="decoded">
-                <div class="decodedLabel">
-                    <p>Decoded</p>
-                </div>
-                <div class="decodedTable">
-                    <div class="customTableParticular">
-                        <div>
-                            <table style="width:100%; margin-bottom: 30px;">
-                                <tr>
-                                    <td>Method Id</td>
-                                    <td>Call</td>
-                                </tr>
-                                <tr>
-                                    <td>0x762ffc42</td>
-                                    <td>VanityReserved(address _to, string _vanity_url)</td> 
-                                </tr>
-                            </table>
-                        </div>
-                        <div>
-                            <table class="userTable" style="width:100%">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Type</th> 
-                                    <th>Indexed?</th>
-                                    <th>Data</th>
-                                </tr>
-                                <tr>
-                                    <td>_to</td>
-                                    <td>address</td> 
-                                    <td>false</td> 
-                                    <td class="tdEditIcon txtColorBlue">0x1ba37e38496a2fc94b8ba011c91d11fece948b16<img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
-                                </tr>
-                                <tr>
-                                    <td>_vanity_url</td>
-                                    <td>string</td> 
-                                    <td>false</td> 
-                                    <td class="tdEditIcon">brins <img src="<%= static_path(@conn, "/images/edit.svg") %>"></td>
-                                </tr>
-                            </table>
-                        </div>
+        
+            <%= if Enum.count(@logs) > 0 do %>
+                <%= for log <- @logs do %>
+                <div class="logAddress">
+                    <div class="logAddressLabel">
+                        <p>Address</p>
+                    </div>
+                    <div class="logAddressLabel logAddressValue">
+                        <p><%= link(
+                        log.address,
+                        to: address_path(@conn, :show, log.address),
+                        "data-test": "log_address_link",
+                        "data-address-hash": log.address
+                        ) %></p>
                     </div>
                 </div>
-            </div>
 
-            <div class="LogsTopic">
-                <div class="LogsTopicLabel">
-                    <p>Topic</p>
-                </div>
-                <div class="LogsTopicValues">
-                    <p>[0] 0x762ffc42e32a1438e72ead545922b834fbdbb79a0547b358a3418bfe286b25b7 <img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
-                </div>
-            </div>
+                <div class="decoded">
+                    <div class="decodedLabel">
+                        <p>Decoded</p>
+                    </div>
+                    <%= case decode(log, @transaction) do %>
+                    <% {:error, :contract_not_verified} -> %>
+                        <div class="alert alert-info">
+                        <%= gettext "To see decoded input data, the contract must be verified." %>
+                        <%= case @transaction do %>
+                            <% %{to_address: %{hash: hash}} -> %>
+                            <%= gettext "Verify the contract " %><a href="<%= address_verify_contract_path(@conn, :new, hash)%>"><%= gettext "here" %></a>
+                            <% _ -> %>
+                            <%= nil %>
+                        <% end %>
+                        </div>
+                    <% {:error, :could_not_decode} -> %>
+                        <div class="alert alert-danger">
+                        <%= gettext "Failed to decode log data." %>
+                        </div>
+                    <% {:ok, method_id, text, mapping} -> %>
+                    <div class="decodedTable">
+                        <div class="customTableParticular">
+                            <div>
+                                <table style="width:100%; margin-bottom: 30px;">
+                                    <tr>
+                                        <td>Method Id</td>
+                                        <td>Call</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0x<%= method_id %></td>
+                                        <td><%= text %></td> 
+                                    </tr>
+                                </table>
+                            </div>
+                            <div>
+                                <table class="userTable" style="width:100%">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th> 
+                                        <th>Indexed?</th>
+                                        <th>Data</th>
+                                    </tr>
+                                    <%= for {name, type, indexed?, value} <- mapping do %>
+                                    <tr>
+                                    <th scope="row">
+                                        <%= case BlockScoutWeb.ABIEncodedValueView.copy_text(type, value) do %>
+                                        <% :error -> %>
+                                            <%= nil %>
+                                        <% copy_text -> %>
+                                        <button type="button" class="copy icon-link" data-toggle="tooltip" data-placement="top" data-clipboard-text="<%= copy_text %>" aria-label="<%= gettext "Copy Value" %>">
+                                        <i class="fas fa-clone"></i>
+                                        </button>
+                                        <% end %>
+                                    </th>
+                                        <td><%= name %></td>
+                                        <td><%= type %></td>
+                                        <td><%= indexed? %></td>
+                                        <td>
+                                            <pre class="transaction-input-text tile"><code><%= BlockScoutWeb.ABIEncodedValueView.value_html(type, value) %></code></pre>
+                                        </td>
+                                    </tr>
+                                    <% end %>
+                                </table>
+                            </div>
+                        <% _ -> %>
+                            <%= nil %>
+                        <% end %>
+                        </div>
+                    
+                
 
-            <div class="LogsTopic LogsData">
-                <div class="LogsTopicLabel">
-                    <p>Data</p>
+                <div class="LogsTopic">
+                    <div class="LogsTopicLabel">
+                        <p>Topic</p>
+                    </div>
+                    <%= unless is_nil(log.first_topic) do %>
+                    <div class="LogsTopicValues">
+                        <p> <%= log.first_topic %><img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
+                    </div>
+                    <% end %>
+                    <%= unless is_nil(log.second_topic) do %>
+                        <div class="text-dark">
+                        <span class="">[1] </span>
+                        <%= log.second_topic %>
+                        </div>
+                    <% end %>
+                    <%= unless is_nil(log.third_topic) do %>
+                        <div class="text-dark">
+                        <span>[2]</span>
+                        <%= log.third_topic %>
+                        </div>
+                    <% end %>
+                    <%= unless is_nil(log.fourth_topic) do %>
+                        <div class="text-dark">
+                        <span>[3]</span>
+                        <%= log.fourth_topic %>
+                        </div>
+                    <% end %>
                 </div>
-                <div class="LogsTopicValues">
-                    <p>0x0000000000000000000000001ba37e38496a2fc94b8ba011c91d11fece948b16000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000056272696e73000000000000000000000000000000000000000000000000000000  <img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
+
+                <div class="LogsTopic LogsData">
+                    <div class="LogsTopicLabel">
+                        <p>Data</p>
+                    </div>
+                    <%= unless is_nil(log.data) do %>
+                    <div class="LogsTopicValues" style="height: inherit">
+                        <p><%= log.data %> <img src="<%= static_path(@conn, "/images/cross.svg") %>"></p>
+                    </div>
+                    <% end %>
                 </div>
-            </div>
+                <% end %>
+            <% else %>
+                <div class="tile tile-muted text-center">
+                    <span><%= gettext "There are no logs for this transaction." %></span>
+                </div>
+            <% end %>
+
+            <%= if @next_page_params do %>
+                <%= link(
+                    gettext("Newer"),
+                    class: "button button-secondary button-sm u-float-right mt-3",
+                    to: transaction_log_path(
+                        @conn,
+                        :index,
+                        @transaction,
+                        @next_page_params
+                    )
+                    ) %>
+            <% end %>
         </div>
     </div>  
 </div>

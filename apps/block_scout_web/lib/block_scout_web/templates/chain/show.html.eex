@@ -116,20 +116,20 @@
     </div>
   </div>
 
-  <div class="card card-chain-contracts">
+  <%# <div class="card card-chain-contracts">
     <div class="card-body">
       <%= link(gettext("View All Contracts →"), to: contract_path(BlockScoutWeb.Endpoint, :index), class: "button button-secondary button-xsmall float-right")%>
-      <h2 class="card-title"><%= gettext "Contracts" %></h2>
-      <div data-selector="channel-batching-message" style="display: none;">
+      <%# <h2 class="card-title"><%= gettext "Contracts" %></h2>
+      <%# <div data-selector="channel-batching-message" style="display: none;">
         <div data-selector="reload-button" class="alert alert-info">
           <a href="#" class="alert-link"><span data-selector="channel-batching-count"></span> <%= gettext "More transactions have come in" %></a>
-        </div>
+        <%# </div>
       </div>
       <span data-selector="contracts-list" data-transactions-path="<%= @contracts_path %>">
-        <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
+        <%# <button data-selector="error-message" class="alert alert-danger col-12 text-left" style="display: none;">
           <span class="alert-link">
             <%= gettext "Something went wrong, click to retry." %>
-          </span>
+          <%# </span>
         </button>
         <div data-selector="loading-message" class="tile tile-muted text-center mt-3">
           <span class="loading-spinner-small mr-2">
@@ -137,10 +137,10 @@
             <span class="loading-spinner-block-2"></span>
           </span>
           <%= gettext("Loading...") %>
-        </div>
+        <%# </div>
       </span>
     </div>
-  </div>
+  </div> %>
 
-  
+   
 </section>

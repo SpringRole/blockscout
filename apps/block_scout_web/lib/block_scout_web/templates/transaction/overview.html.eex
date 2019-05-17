@@ -3,7 +3,7 @@
 <% status = transaction_status(@transaction) %>
 <section data-page="transaction-details" data-page-transaction-hash="<%= @transaction %>">
   <div class="row">
-    <div class="col-md-12 col-lg-8">
+    <div class="col-md-12 col-lg-8">     
       <!-- Transaction Details -->
       <div class="card">
         <div class="card-body">
@@ -24,7 +24,7 @@
               </div>
               <%= gettext("This transaction is pending confirmation.") %>
             </div>
-          <% end %>
+          <% end %> 
 
           <h3 data-test="transaction_detail_hash"><%= @transaction %> </h3>
           <span class="d-block mb-2 text-muted">
@@ -41,7 +41,7 @@
               <% end %>
             </span>
           </div>
-          <hr>
+          <hr> 
           <!-- Block Hash -->
           <dl class="row">
             <dt class="col-sm-3 text-muted"><%= gettext "Block Number" %> </dt>
