@@ -14,17 +14,17 @@
             <div class="transactionDetailsContentLeft">
 
                 <div class="transactionDetailsAttested">
-                    <h3><%= @attestingUserOrCompanyFullName%> has <%= @transactionType%>ed to <%= @attestedUserFullName%>’s as <%= @attestedUserDesignation%> in <%= @companyName%> </h3>
+                    <h3><%= @userFullName%> has registered his SpringRole username: springrole.com/<%= @userVanityURL %> </h3>
                 </div>
 
                 <div class="transactionDetailsType_Stamp">
                     <div class="transactionDetailsType_StampInner">
                         <h5>Transaction Type</h5>
-                        <p><%= @transactionType  %></p>
+                        <p>User name registration</p>
                     </div>
                     <div class="transactionDetailsType_StampInner type_StampInnerValues">
                         <h5>Time Stamp</h5>
-                        <p>31 DEC 2018 | 19:15:34</p>
+                        <p><%= @transaction.block.timestamp %></p>
                     </div>
                 </div>
             </div>
@@ -34,11 +34,10 @@
                 <div class="attestorVerifierParent">
                     <div class="attestorVerifier">
                         <div class="attestorVerifierAvatar">
-                            <img src="<%= @attestedUserLogoURL %>">
-                            <h6>Attestor</h6>
+                            <img src="<%= @userLogoURL %>">
                         </div>
                         <div class="attestorVerifierDetails">
-                            <h3><%= @attestedUserFullName%></h3>
+                            <h3><%= @userFullName%></h3>
                             <h4><%= @userHeadLineText%></h4>
                             <p><%= @userHeadLineCompany%> <%= @userHeadLineLocation%></p>
                            
@@ -48,16 +47,14 @@
 
                 <div class="attestorVerifierParent attestorVerifierLastparent">
                     <div class="attestorVerifier">
-                        <div class="attestorVerifierAvatar">
-                            <img src="<%= @attestingUserOrCompanyLogoURL %>">
-                            <h6>Verifier</h6>
-                        </div>
+                        
                         <div class="attestorVerifierDetails">
-                            <h3><%= @attestingUserOrCompanyFullName %></h3>
+                            <h3>springrole.com/<%= @userVanityURL %></h3>
                             
                         </div>    
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -76,7 +73,7 @@
                     ) %>
               <% end %></p>
                 <p><%= @transactionHash %></p>
-                <p>0xe2F6Cca92C16Bbdd99Df98c837b3BC4955184f50</p>
+                <p>0x8B1874F99B7faB5D018cb88Dd00134CAbb1EC483</p>
             </div>
         </div>
             

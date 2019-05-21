@@ -50,16 +50,6 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
 
       {logs, next_page} = split_list_by_page(logs_plus_one)
 
-      # render(
-      #   conn,
-      #   "index.html",
-      #   exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-      #   internal_transactions: internal_transactions,
-      #   block_height: Chain.block_height(),
-      #   show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-      #   next_page_params: next_page_params(next_page, internal_transactions, params),
-      #   transaction: transaction
-      # )
 
 
       {:ok, hash_string} = Map.fetch(params, "transaction_id")
@@ -67,160 +57,13 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
       payload = Jason.decode!(response)
 
       {:ok, data} = Map.fetch(payload, "data")
-      {:ok, workExResult} = Map.fetch(data, "workExResult")
-
-      if(Map.has_key?(workExResult, "attestingUserDeatils")) do
-
-        {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
-        {:ok, tx} = Map.fetch(workExDetails, "tx")
-        {:ok, company} = Map.fetch(workExDetails, "company")
-        {:ok, companyName} = Map.fetch(company, "name")
-        {:ok, transactionType} = Map.fetch(tx, "transaction_type")
-        {:ok, transactionHash} = Map.fetch(tx, "transaction_hash")
-        {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
-        {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
-        {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full")
-        {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
-        {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
-        {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
-        {:ok, attestingUserDeatils} = Map.fetch(workExResult, "attestingUserDeatils")
-        {:ok, attestingUserOrCompanyName} = Map.fetch(attestingUserDeatils, "name") 
-        {:ok, attestingUserOrCompanyFullName} = Map.fetch(attestingUserOrCompanyName, "full")     
-        {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingUserDeatils, "avatar_url")
-        {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
-        if(length(userHeadLine) == 0) do
-            render(
-                conn,
-                "transactionDetails.html",
-                transactionType: transactionType,
-                transactionHash: transactionHash,
-                attestedUserFullName: attestedUserFullName,
-                companyName: companyName,
-                attestedUserDesignation: attestedUserDesignation,
-                userHeadLineText: "",
-                userHeadLineCompany: "",
-                userHeadLineLocation: "",
-                attestedUserLogoURL: attestedUserLogoURL,
-                attestingUserOrCompanyFullName: attestingUserOrCompanyFullName,
-                attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
-                profileHeadlineType: profileHeadlineType,
-                exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-                internal_transactions: internal_transactions,
-                block_height: Chain.block_height(),
-                show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-                next_page_params: next_page_params(next_page, internal_transactions, params),
-                transaction: transaction,
-                logs: logs
-            )
-        end
-        {:ok, userHeadLineText} = Map.fetch(hd(userHeadLine), "text")
-        {:ok, userHeadLineLocation} = Map.fetch(hd(userHeadLine), "location_name")
-        {:ok, userHeadLineCompany} = Map.fetch(hd(userHeadLine), "company")
-        
-
-
-        render(
-            conn,
-            "transactionDetails.html",
-            transactionType: transactionType,
-            transactionHash: transactionHash,
-            attestedUserFullName: attestedUserFullName,
-            companyName: companyName,
-            attestedUserDesignation: attestedUserDesignation,
-            userHeadLineText: userHeadLineText,
-            userHeadLineCompany: userHeadLineCompany,
-            userHeadLineLocation: userHeadLineLocation,
-            attestedUserLogoURL: attestedUserLogoURL,
-            attestingUserOrCompanyFullName: attestingUserOrCompanyFullName,
-            attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
-            profileHeadlineType: profileHeadlineType,
-            exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-            internal_transactions: internal_transactions,
-            block_height: Chain.block_height(),
-            show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-            next_page_params: next_page_params(next_page, internal_transactions, params),
-            transaction: transaction,
-            logs: logs
-        )
+      if(Map.has_key?(data, "workExResult")) do     
+        attestationRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
+      else
+        vanityRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
       end
 
-
-
-      if(Map.has_key?(workExResult, "attestingCompanyDeatils")) do
-
-            
-        {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
-        {:ok, tx} = Map.fetch(workExDetails, "tx")
-        {:ok, company} = Map.fetch(workExDetails, "company")
-        {:ok, companyName} = Map.fetch(company, "company_name")
-        {:ok, transactionType} = Map.fetch(tx, "transaction_type")
-        {:ok, transactionHash} = Map.fetch(tx, "transaction_hash")
-        {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
-        {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
-        {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full")
-        {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
-        {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
-        {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
-        {:ok, attestingCompanyDeatils} = Map.fetch(workExResult, "attestingCompanyDeatils")
-        {:ok, attestingUserOrCompanyName} = Map.fetch(attestingCompanyDeatils, "name")
-        {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingCompanyDeatils, "logo_url")
-        {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
-        
-        if(length(userHeadLine) == 0) do
-            render(
-              conn,
-              "transactionDetails.html",
-              transactionType: transactionType,
-              transactionHash: transactionHash,
-              attestedUserFullName: attestedUserFullName,
-              companyName: companyName,
-              attestedUserDesignation: attestedUserDesignation,
-              userHeadLineText: "",
-              userHeadLineCompany: "",
-              userHeadLineLocation: "",
-              attestedUserLogoURL: attestedUserLogoURL,
-              attestingUserOrCompanyName: attestingUserOrCompanyName,
-              attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
-              profileHeadlineType: profileHeadlineType,
-              exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-              internal_transactions: internal_transactions,
-              block_height: Chain.block_height(),
-              show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-              next_page_params: next_page_params(next_page, internal_transactions, params),
-              transaction: transaction,
-              logs: logs
-            )
-        end 
-
-        {:ok, userHeadLineText} = Map.fetch(hd(userHeadLine), "text")
-        {:ok, userHeadLineLocation} = Map.fetch(hd(userHeadLine), "location_name")
-        {:ok, userHeadLineCompany} = Map.fetch(hd(userHeadLine), "company")
-
-   
-        render(
-            conn,
-            "transactionDetails.html",
-            transactionType: transactionType,
-            transactionHash: transactionHash,
-            attestedUserFullName: attestedUserFullName,
-            companyName: companyName,
-            attestedUserDesignation: attestedUserDesignation,
-            userHeadLineText: userHeadLineText,
-            userHeadLineCompany: userHeadLineCompany,
-            userHeadLineLocation: userHeadLineLocation,
-            attestedUserLogoURL: attestedUserLogoURL,
-            attestingUserOrCompanyName: attestingUserOrCompanyName,
-            attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
-            profileHeadlineType: profileHeadlineType,
-            exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
-            internal_transactions: internal_transactions,
-            block_height: Chain.block_height(),
-            show_token_transfers: Chain.transaction_has_token_transfers?(hash),
-            next_page_params: next_page_params(next_page, internal_transactions, params),
-            transaction: transaction,
-            logs: logs
-        )
-    end
+     
 
 
 
@@ -237,5 +80,236 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
         |> put_view(TransactionView)
         |> render("not_found.html", transaction_hash: hash_string)
     end
+  end
+
+
+  def vanityRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params) do
+    {:ok, vanityResult} = Map.fetch(data, "VanityResult")
+        {:ok, userName} = Map.fetch(vanityResult, "name")
+        {:ok, userFullName} = Map.fetch(userName, "full")
+        {:ok, userLogoURL} = Map.fetch(vanityResult, "avatar_url")
+        {:ok, userVanityURL} = Map.fetch(vanityResult, "vanity_url")
+        {:ok, transactionHash} = Map.fetch(vanityResult, "transaction_hash")
+        {:ok, userHeadLine} = Map.fetch(vanityResult, "userHeadLine")
+        if(Map.has_key?(userHeadLine, "text")) do
+           {:ok, userHeadLineText} = Map.fetch(userHeadLine, "text")
+
+          if(userHeadLineText == "null") do
+            render(
+              conn, 
+              "transactionDetailsVanity.html",
+              transaction: transaction,
+              logs: logs,
+              userFullName: userFullName,
+              userLogoURL: userLogoURL,
+              userVanityURL: userVanityURL,
+              transactionHash: transactionHash,
+              exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+              internal_transactions: internal_transactions,
+              userHeadLineText: "",
+              userHeadLineCompany: "",
+              userHeadLineLocation: "",
+              block_height: Chain.block_height(),
+              show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+              next_page_params: next_page_params(next_page, internal_transactions, params),
+            )
+          end
+
+          {:ok, userHeadLineText} = Map.fetch(userHeadLine, "text")
+          {:ok, userHeadLineLocation} = Map.fetch(userHeadLine, "location_name")
+          {:ok, userHeadLineCompany} = Map.fetch(userHeadLine, "company")
+
+          render(
+              conn, 
+              "transactionDetailsVanity.html",
+              transaction: transaction,
+              logs: logs,
+              userFullName: userFullName,
+              userLogoURL: userLogoURL,
+              userVanityURL: userVanityURL,
+              transactionHash: transactionHash,
+              exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+              internal_transactions: internal_transactions,
+              userHeadLineText: userHeadLineText,
+              userHeadLineCompany: userHeadLineCompany,
+              userHeadLineLocation: userHeadLineLocation,
+              block_height: Chain.block_height(),
+              show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+              next_page_params: next_page_params(next_page, internal_transactions, params),
+            )
+        
+        else
+          render(
+              conn, 
+              "transactionDetailsVanity.html",
+              transaction: transaction,
+              logs: logs,
+              userFullName: userFullName,
+              userLogoURL: userLogoURL,
+              userVanityURL: userVanityURL,
+              transactionHash: transactionHash,
+              exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+              internal_transactions: internal_transactions,
+              userHeadLineText: "",
+              userHeadLineCompany: "",
+              userHeadLineLocation: "",
+              block_height: Chain.block_height(),
+              show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+              next_page_params: next_page_params(next_page, internal_transactions, params),
+            )
+        end
+
+  end
+
+  def attestationRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params) do
+    {:ok, workExResult} = Map.fetch(data, "workExResult")
+          if(Map.has_key?(workExResult, "attestingUserDeatils")) do
+
+            {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+            {:ok, tx} = Map.fetch(workExDetails, "tx")
+            {:ok, company} = Map.fetch(workExDetails, "company")
+            {:ok, companyName} = Map.fetch(company, "name")
+            {:ok, transactionType} = Map.fetch(tx, "transaction_type")
+            {:ok, transactionHash} = Map.fetch(tx, "transaction_hash")
+            {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+            {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+            {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full")
+            {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
+            {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+            {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
+            {:ok, attestingUserDeatils} = Map.fetch(workExResult, "attestingUserDeatils")
+            {:ok, attestingUserOrCompanyName} = Map.fetch(attestingUserDeatils, "name") 
+            {:ok, attestingUserOrCompanyFullName} = Map.fetch(attestingUserOrCompanyName, "full")     
+            {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingUserDeatils, "avatar_url")
+            {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
+            if(profileHeadlineType == "null") do
+                render(
+                    conn,
+                    "transactionDetailsAttestation.html",
+                    transactionType: transactionType,
+                    transactionHash: transactionHash,
+                    attestedUserFullName: attestedUserFullName,
+                    companyName: companyName,
+                    attestedUserDesignation: attestedUserDesignation,
+                    userHeadLineText: "",
+                    userHeadLineCompany: "",
+                    userHeadLineLocation: "",
+                    attestedUserLogoURL: attestedUserLogoURL,
+                    attestingUserOrCompanyFullName: attestingUserOrCompanyFullName,
+                    attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+                    profileHeadlineType: profileHeadlineType,
+                    next_page_params: next_page_params(next_page, internal_transactions, params),
+                    transaction: transaction,
+                    logs: logs
+                )
+            end
+            {:ok, userHeadLineText} = Map.fetch(userHeadLine, "text")
+            {:ok, userHeadLineLocation} = Map.fetch(userHeadLine, "location_name")
+            {:ok, userHeadLineCompany} = Map.fetch(userHeadLine, "company")
+            
+
+
+            render(
+                conn,
+                "transactionDetailsAttestation.html",
+                transactionType: transactionType,
+                transactionHash: transactionHash,
+                attestedUserFullName: attestedUserFullName,
+                companyName: companyName,
+                attestedUserDesignation: attestedUserDesignation,
+                userHeadLineText: userHeadLineText,
+                userHeadLineCompany: userHeadLineCompany,
+                userHeadLineLocation: userHeadLineLocation,
+                attestedUserLogoURL: attestedUserLogoURL,
+                attestingUserOrCompanyFullName: attestingUserOrCompanyFullName,
+                attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+                profileHeadlineType: profileHeadlineType,
+                exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+                internal_transactions: internal_transactions,
+                block_height: Chain.block_height(),
+                show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+                next_page_params: next_page_params(next_page, internal_transactions, params),
+                transaction: transaction,
+                logs: logs
+            )
+          end
+
+
+
+          if(Map.has_key?(workExResult, "attestingCompanyDeatils")) do
+
+                
+            {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+            {:ok, tx} = Map.fetch(workExDetails, "tx")
+            {:ok, company} = Map.fetch(workExDetails, "company")
+            {:ok, companyName} = Map.fetch(company, "company_name")
+            {:ok, transactionType} = Map.fetch(tx, "transaction_type")
+            {:ok, transactionHash} = Map.fetch(tx, "transaction_hash")
+            {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+            {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+            {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full")
+            {:ok, attestedUserLogoURL} = Map.fetch(attestedUserDetails, "avatar_url")
+            {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+            {:ok, userHeadLine} = Map.fetch(attestedUserDetails, "userHeadLine")
+            {:ok, attestingCompanyDeatils} = Map.fetch(workExResult, "attestingCompanyDeatils")
+            {:ok, attestingUserOrCompanyName} = Map.fetch(attestingCompanyDeatils, "name")
+            {:ok, attestingUserOrCompanyLogoURL} = Map.fetch(attestingCompanyDeatils, "logo_url")
+            {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
+            
+            if(profileHeadlineType == "null") do
+                render(
+                  conn,
+                  "transactionDetails.html",
+                  transactionType: transactionType,
+                  transactionHash: transactionHash,
+                  attestedUserFullName: attestedUserFullName,
+                  companyName: companyName,
+                  attestedUserDesignation: attestedUserDesignation,
+                  userHeadLineText: "",
+                  userHeadLineCompany: "",
+                  userHeadLineLocation: "",
+                  attestedUserLogoURL: attestedUserLogoURL,
+                  attestingUserOrCompanyName: attestingUserOrCompanyName,
+                  attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+                  profileHeadlineType: profileHeadlineType,
+                  exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+                  internal_transactions: internal_transactions,
+                  block_height: Chain.block_height(),
+                  show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+                  next_page_params: next_page_params(next_page, internal_transactions, params),
+                  transaction: transaction,
+                  logs: logs
+                )
+            end 
+
+            {:ok, userHeadLineText} = Map.fetch(userHeadLine, "text")
+            {:ok, userHeadLineLocation} = Map.fetch(userHeadLine, "location_name")
+            {:ok, userHeadLineCompany} = Map.fetch(userHeadLine, "company")
+
+      
+            render(
+                conn,
+                "transactionDetailsAttestation.html",
+                transactionType: transactionType,
+                transactionHash: transactionHash,
+                attestedUserFullName: attestedUserFullName,
+                companyName: companyName,
+                attestedUserDesignation: attestedUserDesignation,
+                userHeadLineText: userHeadLineText,
+                userHeadLineCompany: userHeadLineCompany,
+                userHeadLineLocation: userHeadLineLocation,
+                attestedUserLogoURL: attestedUserLogoURL,
+                attestingUserOrCompanyName: attestingUserOrCompanyName,
+                attestingUserOrCompanyLogoURL: attestingUserOrCompanyLogoURL,
+                profileHeadlineType: profileHeadlineType,
+                exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+                internal_transactions: internal_transactions,
+                block_height: Chain.block_height(),
+                show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+                next_page_params: next_page_params(next_page, internal_transactions, params),
+                transaction: transaction,
+                logs: logs
+            )
+          end
   end
 end

@@ -12,41 +12,6 @@ defmodule BlockScoutWeb.TransactionInternalTransactionView do
   import BlockScoutWeb.Gettext
   @dialyzer :no_match
 
-  # def transaction_status(transaction) do
-  #   Chain.transaction_to_status(transaction)
-  # end
-
-  # def confirmations(%Transaction{block: block}, named_arguments) when is_list(named_arguments) do
-  #   case block do
-  #     nil ->
-  #       0
-
-  #     %Block{consensus: true} ->
-  #       {:ok, confirmations} = Chain.confirmations(block, named_arguments)
-  #       Cldr.Number.to_string!(confirmations, format: "#,###")
-  #   end
-  # end
-
-  # def formatted_fee(%Transaction{} = transaction, opts) do
-  #   transaction
-  #   |> Chain.fee(:wei)
-  #   |> fee_to_denomination(opts)
-  #   |> case do
-  #     {:actual, value} -> value
-  #     {:maximum, value} -> "#{gettext("Max of")} #{value}"
-  #   end
-  # end
-
-  # def empty_exchange_rate?(exchange_rate) do
-  #   Token.null?(exchange_rate)
-  # end
-
-  # defp fee_to_denomination({fee_type, fee}, opts) do
-  #   denomination = Keyword.get(opts, :denomination)
-  #   include_label? = Keyword.get(opts, :include_label, true)
-  #   {fee_type, format_wei_value(Wei.from(fee, :wei), denomination, include_unit_label: include_label?)}
-  # end
-
   defguardp is_transaction_type(mod) when mod in [InternalTransaction, Transaction]
 
   defdelegate formatted_timestamp(block), to: BlockView
