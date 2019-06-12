@@ -1,0 +1,128 @@
+<% status = transaction_status(@transaction.transaction) %>
+<div class="tile tile-type-<%= type_suffix(@transaction.transaction) %> fade-in <%= status_class(@transaction.transaction) %>" data-test="<%= type_suffix(@transaction.transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
+  <div class="row tile-body" data-selector="token-transfers-toggle" data-test="chain_transaction">
+    <div class="col-md-2 d-flex flex-row flex-md-column align-items-left justify-content-start justify-content-lg-center mb-1 mb-md-0 pl-md-4">
+      <span class="tile-label" data-test="transaction_type">
+        <%= transaction_display_type(@transaction.transaction) %>
+      </span>
+      <span class="tile-status-label ml-2 ml-md-0" data-test="transaction_status">
+        <%= if status_class(@transaction.transaction) == "tile-status--pending" do %>
+        <div class="loading-spinner-small">
+          <span class="loading-spinner-block-1"></span>
+          <span class="loading-spinner-block-2"></span>
+        </div>
+        <% end %>
+        <%= formatted_status(status) %>
+      </span>
+    </div>
+
+
+
+    <%= if @transaction.tx_address == @transaction.attestationTwo or @transaction.tx_address == @transaction.vanityOne or @transaction.tx_address == @transaction.attestationOne or @transaction.tx_address == @transaction.vanityTwo do %>
+      <%= case @transaction.data["txType"] do %>
+        <% "Attestation" -> %>  
+          <% case @transaction.tx["signed_by_type"] do %>
+            <% "user" -> %>
+              <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+                <span class="text-nowrap">
+                  <%= @transaction.attestingUserFullName%> has attested to <%= @transaction.attestedUserFullName%>'s <%= @transaction.profileHeadlineType%> as <%= @transaction.attestedUserDesignation%> in <%= @transaction.companyName%>.
+                </span>
+              </div>      
+            <% "company" -> %>        
+              <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+                <span class="text-nowrap">
+                  <%= @transaction.attestedUserFullName%>'s <%= @transaction.profileHeadlineType%> as <%= @transaction.attestedUserDesignation%> at <%= @transaction.attestingCompanyName%> has been verified by the company. 
+                </span>
+              </div>
+          <% end %>
+
+        <% "Vanity Reservation" -> %>
+          <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+            <span class="text-nowrap">
+              <%= @transaction.vanityUserFullName%> has reserved the vanity name <%= @transaction.userVanityURL%> against his SpringRole profile.
+            </span>
+          </div>
+
+        <% "Null" -> %>
+          <%= if @transaction.tx_address ==  @transaction.attestationTwo or @transaction.tx_address ==  @transaction.attestationOne do %>
+            <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+              <span class="text-nowrap">
+                Attestation not recorded.
+              </span>
+            </div>
+          <% end %>
+          <%= if @transaction.tx_address == @transaction.vanityOne or @transaction.tx_address == @transaction.vanityTwo do %>
+            <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+              <span class="text-nowrap">
+                VanityURL not reserved.
+              </span>
+            </div>
+          <% end %>
+      <% end %>
+
+    <% else %>
+    <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+      <%= render "_link.html", transaction_hash: @transaction.hash %>
+      <span class="text-nowrap">
+        <%= @transaction.transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+        &rarr;
+        <%= @transaction.transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </span>
+      <span class="d-flex flex-md-row flex-column mt-3 mt-md-0">
+        <span class="tile-title">
+          <%= value(@transaction.transaction, include_label: false) %> <%= gettext "Ether" %>
+        </span>
+        <span class="ml-0 ml-md-1 text-nowrap">
+          <%= formatted_fee(@transaction.transaction, denomination: :ether, include_label: false) %>
+          <%= gettext "TX Fee" %>
+        </span>
+      </span>
+    </div>
+    <% end %>
+
+
+    <div class="col-md-3 col-lg-2 d-flex flex-row flex-md-column flex-nowrap justify-content-start text-md-right mt-3 mt-md-0">
+      <span class="mr-2 mr-md-0 order-1">
+        <%= @transaction.transaction |> block_number() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </span>
+      <span class="mr-2 mr-md-0 order-2" in-tile
+        data-from-now="<%= block_timestamp(@transaction.transaction) %>"></span>
+      <%= if from_or_to_address?(@transaction.transaction, assigns[:current_address]) do %>
+      <span class="mr-2 mr-md-0 order-0 order-md-3">
+        <%= if @transaction.transaction.from_address_hash == assigns[:current_address].hash do %>
+        <span data-test="transaction_type" class="badge badge-danger tile-badge">
+          <%= gettext "OUT" %>
+        </span>
+        <% else %>
+        <span data-test="transaction_type" class="badge badge-success tile-badge">
+          <%= gettext "IN" %>
+        </span>
+        <% end %>
+      </span>
+      <% end %>
+    </div>
+
+    <%= if involves_token_transfers?(@transaction.transaction) do %>
+    <div class="offset-md-2 col-md-10 col-lg-8 d-flex flex-column mt-2 mb-2">
+      <% [first_token_transfer | remaining_token_transfers] = @transaction.transaction.token_transfers %>
+
+      <%= render "_token_transfer.html", address: assigns[:current_address], token_transfer: first_token_transfer %>
+
+      <div class="collapse token-transfer-toggle" id="transaction-<%= @transaction.hash %>">
+        <%= for token_transfer <- remaining_token_transfers do %>
+        <%= render "_token_transfer.html", address: assigns[:current_address], token_transfer: token_transfer %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= if Enum.any?(remaining_token_transfers) do %>
+    <div class="col-md-12 d-flex flex-column mt-1 mb-2 text-center token-tile-view-more">
+      <span class="token-tile-more-lines">
+        <%= link gettext("View More Transfers"), to: "#transaction-#{@transaction.hash}", "data-toggle": "collapse", "data-selector": "token-transfer-open", "data-test": "token_transfers_expansion" %>
+        <%= link gettext("View Less Transfers"), class: "d-none", to: "#transaction-#{@transaction.hash}", "data-toggle": "collapse", "data-selector": "token-transfer-close" %>
+      </span>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+</div>
