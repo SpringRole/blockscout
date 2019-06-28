@@ -8,6 +8,9 @@ import { createStore, connectElements } from "../lib/redux_helpers.js";
 import { batchChannel } from "../lib/utils";
 import listMorph from "../lib/list_morph";
 import { createMarketHistoryChart } from "../lib/market_history_chart";
+import { bindActionCreators } from "redux";
+const axios = require('axios');
+var request = require('request');
 
 const BATCH_THRESHOLD = 6;
 
@@ -24,106 +27,132 @@ export const initialState = {
     transactionsError: false,
     transactionsLoading: true,
     transactionCount: null,
-    usdMarketCap: null
+    usdMarketCap: null,
+    contracts: [],
+    contractsBatch: [],
+    contractsLoading: true,
+    contractsError: false
 };
 
 export const reducer = withMissingBlocks(baseReducer);
 
 function baseReducer(state = initialState, action) {
     switch (action.type) {
-        case "ELEMENTS_LOAD": {
-            return Object.assign({}, state, _.omit(action, "type"));
-        }
-        case "RECEIVED_NEW_ADDRESS_COUNT": {
-            return Object.assign({}, state, {
-                addressCount: action.msg.count
-            });
-        }
-        case "RECEIVED_NEW_BLOCK": {
-            if (
-                !state.blocks.length ||
-                state.blocks[0].blockNumber < action.msg.blockNumber
-            ) {
+        case "ELEMENTS_LOAD":
+            {
+                return Object.assign({}, state, _.omit(action, "type"));
+            }
+        case "RECEIVED_NEW_ADDRESS_COUNT":
+            {
                 return Object.assign({}, state, {
-                    averageBlockTime: action.msg.averageBlockTime,
-                    blocks: [action.msg, ...state.blocks.slice(0, -1)]
-                });
-            } else {
-                return Object.assign({}, state, {
-                    blocks: state.blocks.map(block =>
-                        block.blockNumber === action.msg.blockNumber
-                            ? action.msg
-                            : block
-                    )
+                    addressCount: action.msg.count
                 });
             }
-        }
-        case "START_BLOCKS_FETCH": {
-            return Object.assign({}, state, {
-                blocksError: false,
-                blocksLoading: true
-            });
-        }
-        case "BLOCKS_FINISH_REQUEST": {
-            return Object.assign({}, state, { blocksLoading: false });
-        }
-        case "BLOCKS_FETCHED": {
-            return Object.assign({}, state, { blocks: [...action.msg.blocks] });
-        }
-        case "BLOCKS_REQUEST_ERROR": {
-            return Object.assign({}, state, { blocksError: true });
-        }
-        case "RECEIVED_NEW_EXCHANGE_RATE": {
-            return Object.assign({}, state, {
-                availableSupply: action.msg.exchangeRate.availableSupply,
-                marketHistoryData: action.msg.marketHistoryData,
-                usdMarketCap: action.msg.exchangeRate.marketCapUsd
-            });
-        }
-        case "RECEIVED_NEW_TRANSACTION_BATCH": {
-            if (state.channelDisconnected) return state;
-
-            const transactionCount =
-                state.transactionCount + action.msgs.length;
-
-            if (state.transactionsLoading || state.transactionsError) {
-                return Object.assign({}, state, { transactionCount });
+        case "RECEIVED_NEW_BLOCK":
+            {
+                if (!state.blocks.length ||
+                    state.blocks[0].blockNumber < action.msg.blockNumber
+                ) {
+                    return Object.assign({}, state, {
+                        averageBlockTime: action.msg.averageBlockTime,
+                        blocks: [action.msg, ...state.blocks.slice(0, -1)]
+                    });
+                } else {
+                    return Object.assign({}, state, {
+                        blocks: state.blocks.map(block =>
+                            block.blockNumber === action.msg.blockNumber ?
+                            action.msg :
+                            block
+                        )
+                    });
+                }
             }
-
-            if (
-                !state.transactionsBatch.length &&
-                action.msgs.length < BATCH_THRESHOLD
-            ) {
+        case "START_BLOCKS_FETCH":
+            {
                 return Object.assign({}, state, {
-                    transactions: [
-                        ...action.msgs.reverse(),
-                        ...state.transactions.slice(0, -1 * action.msgs.length)
-                    ],
-                    transactionCount
-                });
-            } else {
-                return Object.assign({}, state, {
-                    transactionsBatch: [
-                        ...action.msgs.reverse(),
-                        ...state.transactionsBatch
-                    ],
-                    transactionCount
+                    blocksError: false,
+                    blocksLoading: true
                 });
             }
-        }
+        case "BLOCKS_FINISH_REQUEST":
+            {
+                return Object.assign({}, state, { blocksLoading: false });
+            }
+        case "BLOCKS_FETCHED":
+            {
+                return Object.assign({}, state, { blocks: [...action.msg.blocks] });
+            }
+        case "BLOCKS_REQUEST_ERROR":
+            {
+                return Object.assign({}, state, { blocksError: true });
+            }
+        case "RECEIVED_NEW_EXCHANGE_RATE":
+            {
+                return Object.assign({}, state, {
+                    availableSupply: action.msg.exchangeRate.availableSupply,
+                    marketHistoryData: action.msg.marketHistoryData,
+                    usdMarketCap: action.msg.exchangeRate.marketCapUsd
+                });
+            }
+        case "RECEIVED_NEW_TRANSACTION_BATCH":
+            {
+                if (state.channelDisconnected) return state;
+
+                const transactionCount =
+                    state.transactionCount + action.msgs.length;
+
+                const contractsCount = state.contractsCount + actions.msgs.length
+
+                if (state.transactionsLoading || state.transactionsError) {
+                    return Object.assign({}, state, { transactionCount, contractsCount });
+                }
+
+                if (!state.transactionsBatch.length &&
+                    action.msgs.length < BATCH_THRESHOLD
+                ) {
+                    return Object.assign({}, state, {
+                        transactions: [
+                            ...action.msgs.reverse(),
+                            ...state.transactions.slice(0, -1 * action.msgs.length)
+                        ],
+                        transactionCount,
+                        contracts: [
+                            ...action.msgs.reverse(),
+                            ...state.transactions.slice(0, -1 * action.msgs.length)
+                        ],
+                        contractsCount
+                    });
+                } else {
+                    return Object.assign({}, state, {
+                        transactionsBatch: [
+                            ...action.msgs.reverse(),
+                            ...state.transactionsBatch
+                        ],
+                        transactionCount,
+                        contractsBatch: [
+                            ...action.msgs.reverse(),
+                            ...state.transactionsBatch
+                        ],
+                        contractsCount
+                    });
+                }
+            }
         case "START_TRANSACTIONS_FETCH":
             return Object.assign({}, state, {
                 transactionsError: false,
-                transactionsLoading: true
+                transactionsLoading: true,
+                contractsError: false,
+                contractsLoading: true
             });
         case "TRANSACTIONS_FETCHED":
             return Object.assign({}, state, {
-                transactions: [...action.msg.transactions]
+                transactions: [...action.msg.transactions],
+                contracts: [...action.msg.transactions]
             });
         case "TRANSACTIONS_FETCH_ERROR":
-            return Object.assign({}, state, { transactionsError: true });
+            return Object.assign({}, state, { transactionsError: true, contractsError: true });
         case "FINISH_TRANSACTIONS_FETCH":
-            return Object.assign({}, state, { transactionsLoading: false });
+            return Object.assign({}, state, { transactionsLoading: false, contractsLoading: false });
         default:
             return state;
     }
@@ -141,10 +170,10 @@ function withMissingBlocks(reducer) {
         return Object.assign({}, result, {
             blocks: _.rangeRight(minBlock, maxBlock + 1).map(
                 blockNumber =>
-                    _.find(result.blocks, ["blockNumber", blockNumber]) || {
-                        blockNumber,
-                        chainBlockHtml: placeHolderBlock(blockNumber)
-                    }
+                _.find(result.blocks, ["blockNumber", blockNumber]) || {
+                    blockNumber,
+                    chainBlockHtml: placeHolderBlock(blockNumber)
+                }
             )
         });
     };
@@ -157,8 +186,7 @@ const elements = {
             chart = createMarketHistoryChart($el[0]);
         },
         render($el, state, oldState) {
-            if (
-                !chart ||
+            if (!chart ||
                 (oldState.availableSupply === state.availableSupply &&
                     oldState.marketHistoryData === state.marketHistoryData)
             )
@@ -255,6 +283,34 @@ const elements = {
                 state.transactions,
                 ({ transactionHtml }) => $(transactionHtml)[0]
             );
+
+            listMorph(container, newElements, {
+                key: "dataset.identifierHash"
+            });
+        }
+    },
+    '[data-selector="contracts-list"] [data-selector="error-message"]': {
+        render($el, state, oldState) {
+            $el.toggle(state.contractsError);
+        }
+    },
+    '[data-selector="contracts-list"] [data-selector="loading-message"]': {
+        render($el, state, oldState) {
+            $el.toggle(state.contractsLoading);
+        }
+    },
+    '[data-selector="contracts-list"]': {
+        load($el) {
+            return { contractsPath: $el[0].dataset.contractsPath };
+        },
+        render($el, state, oldState) {
+            if (oldState.contracts === state.contracts) return;
+            const container = $el[0];
+            const newElements = _.map(
+                state.contracts,
+                ({ transactionHtml }) => $(transactionHtml)[0]
+            );
+
             listMorph(container, newElements, {
                 key: "dataset.identifierHash"
             });

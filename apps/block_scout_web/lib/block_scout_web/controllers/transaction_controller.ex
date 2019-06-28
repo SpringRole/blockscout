@@ -35,7 +35,7 @@ defmodule BlockScoutWeb.TransactionController do
           transaction_path(conn, :index, Map.delete(next_page_params, "type"))
       end
 
-      #Fetch contract addresses 
+    #Fetch contract addresses 
     contract_address = Call.contract_addresses()
     {:ok, attestationOne } = Map.fetch(contract_address, :AttestationOne)
     {:ok, attestationTwo } = Map.fetch(contract_address, :AttestationTwo)
@@ -65,13 +65,14 @@ defmodule BlockScoutWeb.TransactionController do
               {:ok, workExResult} = Map.fetch(data, "workExResult")
               {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
               {:ok, tx} = Map.fetch(workExDetails, "tx")
+              {:ok, signedByType} = Map.fetch(tx, "signed_by_type")
   
 
-              case tx["signed_by_type"] do 
+              case signedByType do 
                 "user" -> 
-                  attestedByUserMap = attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, tx)
+                  attestedByUserMap = attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType)
                 "company" ->
-                  attestedByCompanyMap = attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, tx)
+                  attestedByCompanyMap = attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType)
                 end
 
               
@@ -90,7 +91,7 @@ defmodule BlockScoutWeb.TransactionController do
                   hash: Hash.to_string(transaction.hash),
                   data: data,                               
                   workExResult: "",
-                  tx: "",
+                  signed_by_type: "",
                   companyName: "",
                   attestedUserFullName: "",
                   attestedUserDesignation: "",
@@ -116,7 +117,7 @@ defmodule BlockScoutWeb.TransactionController do
               "payload" => "Not a contract call"
             }, 
             workExResult: "",
-            tx: "",
+            signed_by_type: "",
             companyName: "",
             attestedUserFullName: "",
             attestedUserDesignation: "", 
@@ -146,7 +147,7 @@ defmodule BlockScoutWeb.TransactionController do
     )
   end 
 
-    def attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, tx) do
+    def attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType) do
       {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
       {:ok, company} = Map.fetch(workExDetails, "company")
       {:ok, companyName} = Map.fetch(company, "name")    
@@ -169,7 +170,7 @@ defmodule BlockScoutWeb.TransactionController do
         hash: Hash.to_string(transaction.hash),
         data: data, 
         workExResult: workExResult,
-        tx: tx,
+        signedByType: signedByType,
         companyName: companyName,
         attestedUserFullName: attestedUserFullName,
         attestedUserDesignation: attestedUserDesignation,
@@ -181,7 +182,7 @@ defmodule BlockScoutWeb.TransactionController do
       }
     end
 
-    def attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, tx) do
+    def attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType) do
       {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
       {:ok, company} = Map.fetch(workExDetails, "company")
       {:ok, companyName} = Map.fetch(company, "name")
@@ -204,7 +205,7 @@ defmodule BlockScoutWeb.TransactionController do
         hash: Hash.to_string(transaction.hash),
         data: data,
         workExResult: workExResult,
-        tx: tx,
+        signedByType: signedByType,
         companyName: companyName,
         attestedUserFullName: attestedUserFullName,
         attestedUserDesignation: attestedUserDesignation,

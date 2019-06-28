@@ -37,7 +37,7 @@
             <p> <%= @attestedUserFullName%>'s <%= @profileHeadlineType%> as <%= @attestedUserDesignation%> at
               <%= @attestingCompanyName%> has been verified by the company. </p>
           </span>
-      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
+      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show, @transaction.hash)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
         </div>
       <% end %>
 
@@ -47,7 +47,7 @@
       <span class="text-nowrap">
         <%= @vanityUserFullName%> has reserved the vanity name <%= @userVanityURL%> against his SpringRole profile.
       </span>
-      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
+      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show, @transaction.hash)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
     </div>
 
     <% "Null" -> %>
@@ -56,7 +56,7 @@
       <span class="text-nowrap">
         Attestation not recorded.
       </span>
-      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
+      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show, @transaction.hash)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
     </div>
     <% end %>
     <%= if @tx_address == @vanityOne or @tx_address == @vanityTwo do %>
@@ -64,7 +64,7 @@
       <span class="text-nowrap">
         VanityURL not reserved.
       </span>
-      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
+      <h5><%= link(gettext("View Details"), to: transaction_path(BlockScoutWeb.Endpoint, :show, @transaction.hash)) %> <img src="<%= static_path(@conn, "/images/viewBlue.svg") %>"></h5>
     </div>
     <% end %>
     <% end %>

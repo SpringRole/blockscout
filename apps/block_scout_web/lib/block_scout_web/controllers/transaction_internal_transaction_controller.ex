@@ -57,16 +57,24 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
       payload = Jason.decode!(response)
 
       {:ok, data} = Map.fetch(payload, "data")
-      if(Map.has_key?(data, "workExResult")) do     
-        attestationRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
-      else
-        vanityRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
+
+      case data["txType"] do
+        "Attestation" ->
+          attestationRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
+        "Vanity Reservation" ->
+          vanityRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params)
+        "Null" -> 
+          render(
+            conn,
+            "index.html",
+            exchange_rate: Market.get_exchange_rate(Explorer.coin()) || Token.null(),
+            internal_transactions: internal_transactions,
+            block_height: Chain.block_height(),
+            show_token_transfers: Chain.transaction_has_token_transfers?(hash),
+            next_page_params: next_page_params(next_page, internal_transactions, params),
+            transaction: transaction
+          ) 
       end
-
-     
-
-
-
     else
       :error ->
         conn
@@ -82,9 +90,9 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
     end
   end
 
-
+    
   def vanityRender(conn, data, internal_transactions, transaction, logs, hash, next_page, params) do
-    {:ok, vanityResult} = Map.fetch(data, "VanityResult")
+    {:ok, vanityResult} = Map.fetch(data, "vanityResult")
         {:ok, userName} = Map.fetch(vanityResult, "name")
         {:ok, userFullName} = Map.fetch(userName, "full")
         {:ok, userLogoURL} = Map.fetch(vanityResult, "avatar_url")
@@ -259,7 +267,7 @@ defmodule BlockScoutWeb.TransactionInternalTransactionController do
             if(profileHeadlineType == "null") do
                 render(
                   conn,
-                  "transactionDetails.html",
+                  "transactionDetailsAttestation.html",
                   transactionType: transactionType,
                   transactionHash: transactionHash,
                   attestedUserFullName: attestedUserFullName,

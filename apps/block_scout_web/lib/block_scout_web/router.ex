@@ -89,6 +89,8 @@ defmodule BlockScoutWeb.Router do
 
     resources("/recent_transactions", RecentTransactionsController, only: [:index])
 
+    resources("/contracts", ContractsController, only: [:index])
+
     get("/txs", TransactionController, :index)
 
     resources "/tx", TransactionController, only: [:show] do
