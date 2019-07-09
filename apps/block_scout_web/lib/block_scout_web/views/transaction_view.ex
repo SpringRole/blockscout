@@ -8,10 +8,14 @@ defmodule BlockScoutWeb.TransactionView do
   alias Explorer.Chain.{Address, Block, InternalTransaction, Transaction, Wei}
   alias Explorer.ExchangeRates.Token
   alias Timex.Duration
+  alias BlockScoutWeb.Call
+  alias Explorer.Chain.Hash
 
   import BlockScoutWeb.Gettext
 
   @tabs ["token_transfers", "internal_transactions", "logs"]
+
+  
 
   defguardp is_transaction_type(mod) when mod in [InternalTransaction, Transaction]
 
@@ -199,10 +203,26 @@ defmodule BlockScoutWeb.TransactionView do
   def to_address_hash(%Transaction{to_address_hash: address_hash}), do: address_hash
 
   def transaction_display_type(%Transaction{} = transaction) do
+    contract_address = Call.contract_addresses()
+    {:ok, attestationOne } = Map.fetch(contract_address, :AttestationOne)
+    {:ok, attestationTwo } = Map.fetch(contract_address, :AttestationTwo)
+    {:ok, vanityOne } = Map.fetch(contract_address, :VanityOne)
+    {:ok, vanityTwo } = Map.fetch(contract_address, :VanityTwo)
     cond do
       involves_token_transfers?(transaction) -> gettext("Token Transfer")
       contract_creation?(transaction) -> gettext("Contract Creation")
-      involves_contract?(transaction) -> gettext("Contract Call")
+      involves_contract?(transaction) -> 
+        transaction_address = transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, :current_address) |> BlockScoutWeb.RenderHelpers.render_partial()
+        
+        {:ok, tx_address_1 } = Enum.fetch(List.first(elem(transaction_address, 1)), 1)
+        {:ok, tx_address_2 } = Enum.fetch(tx_address_1, 2)
+        tx_address = String.slice(List.to_string(tx_address_2), 46, 42)
+        
+        if(tx_address == vanityOne or tx_address == vanityTwo) do
+          gettext("Vanity Verification")
+        else 
+          gettext("Work Experience Verification")
+        end
       true -> gettext("Transaction")
     end
   end

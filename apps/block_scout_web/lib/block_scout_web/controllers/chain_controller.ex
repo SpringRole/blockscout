@@ -10,11 +10,24 @@ defmodule BlockScoutWeb.ChainController do
   alias Phoenix.View
   alias Explorer.Stats
 
+  
+
   def show(conn, _params) do
     transaction_estimated_count = Chain.transaction_estimated_count()
-    attestation_count = Stats.attestation_count()
-    vanity_count = Stats.vanity_count()
-    transaction_time = Stats.transaction_time()
+
+    recent_transactions =
+        Chain.recent_collated_transactions(
+          necessity_by_association: %{
+            :block => :required,
+            [created_contract_address: :names] => :optional,
+            [from_address: :names] => :required,
+            [to_address: :names] => :optional
+          },
+          paging_options: %PagingOptions{page_size: 5}
+        )
+
+        [ latest_transaction | tail ] = recent_transactions
+        
 
     exchange_rate = Market.get_exchange_rate(Explorer.coin()) || Token.null()
 
@@ -27,11 +40,11 @@ defmodule BlockScoutWeb.ChainController do
       chart_data_path: market_history_chart_path(conn, :show),
       transaction_estimated_count: transaction_estimated_count,
       transactions_path: recent_transactions_path(conn, :index),
-      attestation_count: attestation_count,
-      vanity_count: vanity_count,
-      transaction_time: transaction_time
-
-
+      attestation_count: Stats.attestation_count(),
+      vanity_count: Stats.vanity_count(),
+      transaction_time: Stats.transaction_time(),
+      latest_transaction: latest_transaction,
+      contract_path: BlockScoutWeb.Router.Helpers.contracts_path(conn, :index)
     )
   end
 

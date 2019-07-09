@@ -1,0 +1,20 @@
+<div>
+
+    <%= case @contractType do %>
+        <% "Work Experience Verification" -> %>
+            <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+                <span class="text-nowrap">
+                    <h3><% @contractType %></h3><br>
+                    <h4><%= @transaction.hash %><h4>
+                </span>
+            </div>
+        <% "Vanity Reservation" -> %>
+            <div class="col-md-7 col-lg-8 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+                <span class="text-nowrap">
+                    <h3><% @contractType %></h3><br>
+                    <h4><%= @transaction.hash %><h4>
+                </span>
+            </div>
+    <% end %>
+
+</div>

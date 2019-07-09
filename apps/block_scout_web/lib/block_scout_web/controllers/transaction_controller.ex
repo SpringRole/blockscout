@@ -6,6 +6,8 @@ defmodule BlockScoutWeb.TransactionController do
   alias BlockScoutWeb.TransactionView
   alias Explorer.Chain
   alias Phoenix.View
+  alias BlockScoutWeb.Call
+  alias Explorer.Chain.Hash
 
   def index(conn, %{"type" => "JSON"} = params) do
     full_options =
@@ -33,21 +35,218 @@ defmodule BlockScoutWeb.TransactionController do
           transaction_path(conn, :index, Map.delete(next_page_params, "type"))
       end
 
+    #Fetch contract addresses 
+    contract_address = Call.contract_addresses()
+    {:ok, attestationOne } = Map.fetch(contract_address, :AttestationOne)
+    {:ok, attestationTwo } = Map.fetch(contract_address, :AttestationTwo)
+    {:ok, vanityOne } = Map.fetch(contract_address, :VanityOne)
+    {:ok, vanityTwo } = Map.fetch(contract_address, :VanityTwo)
+
+    #Create the list of transactions to be rendered
+    transactions_to_be_rendered = 
+      Enum.map(transactions, fn transaction -> 
+        
+        #Fetch the "to" address of transaction
+        transaction_address = transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, :current_address) |> BlockScoutWeb.RenderHelpers.render_partial()
+        contract_address = Call.contract_addresses()
+        {:ok, tx_address_1 } = Enum.fetch(List.first(elem(transaction_address, 1)), 1)
+        {:ok, tx_address_2 } = Enum.fetch(tx_address_1, 2)
+        tx_address = String.slice(List.to_string(tx_address_2), 46, 42)
+        
+
+        if(tx_address == attestationTwo or tx_address == vanityOne or tx_address == attestationOne or tx_address == vanityTwo) do
+          response = Call.single_transaction(Hash.to_string(transaction.hash))
+          payload = Jason.decode!(response)
+          {:ok, data} = Map.fetch(payload, "data")
+
+
+          case data["txType"] do
+            "Attestation" -> 
+              {:ok, workExResult} = Map.fetch(data, "workExResult")
+              {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+              {:ok, tx} = Map.fetch(workExDetails, "tx")
+              {:ok, signedByType} = Map.fetch(tx, "signed_by_type")
+  
+
+              case signedByType do 
+                "user" -> 
+                  attestedByUserMap = attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType)
+                "company" ->
+                  attestedByCompanyMap = attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType)
+                end
+
+              
+            "Vanity Reservation" ->
+              vanityMap = vanityMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address)
+
+
+            "Null" -> 
+                %{
+                  transaction: transaction,
+                  attestationOne: attestationOne,
+                  attestationTwo: attestationTwo,
+                  vanityOne: vanityOne,
+                  vanityTwo: vanityTwo,
+                  tx_address: tx_address,
+                  hash: Hash.to_string(transaction.hash),
+                  data: data,                               
+                  workExResult: "",
+                  signed_by_type: "",
+                  companyName: "",
+                  attestedUserFullName: "",
+                  attestedUserDesignation: "",
+                  profileHeadlineType: "",
+                  attestingUserFullName: "",
+                  attestingCompanyName: "",
+                  vanityUserFullName: "",
+                  userVanityURL: ""                
+                }  
+          end 
+
+          
+        else       
+          %{
+            transaction: transaction,
+            attestationOne: attestationOne,
+            attestationTwo: attestationTwo,
+            vanityOne: vanityOne,
+            vanityTwo: vanityTwo,
+            tx_address: tx_address,
+            hash: Hash.to_string(transaction.hash),  
+            data: %{
+              "payload" => "Not a contract call"
+            }, 
+            workExResult: "",
+            signed_by_type: "",
+            companyName: "",
+            attestedUserFullName: "",
+            attestedUserDesignation: "", 
+            profileHeadlineType: "",  
+            attestingUserFullName: "",
+            attestingCompanyName: "",
+            vanityUserFullName: "",
+            userVanityURL: ""                               
+          }
+        end
+      end) 
+      
+
     json(
       conn,
       %{
         items:
-          Enum.map(transactions, fn transaction ->
+          Enum.map(transactions_to_be_rendered, fn transaction ->
             View.render_to_string(
               TransactionView,
-              "_tile.html",
+              "_tile_transactions_list.html",
               transaction: transaction
             )
           end),
         next_page_path: next_page_path
       }
     )
-  end
+  end 
+
+    def attestedByUserMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType) do
+      {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+      {:ok, company} = Map.fetch(workExDetails, "company")
+      {:ok, companyName} = Map.fetch(company, "name")    
+      {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+      {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+      {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full") 
+      {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")  
+      {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+      {:ok, attestingUserDetails} = Map.fetch(workExResult, "attestingUserDetails")
+      {:ok, attestingUserName} = Map.fetch(attestingUserDetails, "name") 
+      {:ok, attestingUserFullName} = Map.fetch(attestingUserName, "full") 
+                    
+      %{
+        transaction: transaction,
+        attestationOne: attestationOne,
+        attestationTwo: attestationTwo,
+        vanityOne: vanityOne,
+        vanityTwo: vanityTwo,
+        tx_address: tx_address,
+        hash: Hash.to_string(transaction.hash),
+        data: data, 
+        workExResult: workExResult,
+        signedByType: signedByType,
+        companyName: companyName,
+        attestedUserFullName: attestedUserFullName,
+        attestedUserDesignation: attestedUserDesignation,
+        profileHeadlineType: profileHeadlineType,
+        attestingUserFullName: attestingUserFullName,
+        attestingCompanyName: "",
+        vanityUserFullName: "",
+        userVanityURL: ""                  
+      }
+    end
+
+    def attestedByCompanyMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address, workExResult, workExDetails, signedByType) do
+      {:ok, workExDetails} = Map.fetch(workExResult, "workExDetails")
+      {:ok, company} = Map.fetch(workExDetails, "company")
+      {:ok, companyName} = Map.fetch(company, "name")
+      {:ok, attestedUserDetails} = Map.fetch(workExResult, "attestedUserDetails")
+      {:ok, attestedUserName} = Map.fetch(attestedUserDetails, "name")
+      {:ok, attestedUserFullName} = Map.fetch(attestedUserName, "full")
+      {:ok, profileHeadlineType} = Map.fetch(attestedUserDetails, "profile_headline_type")
+      {:ok, attestedUserDesignation} = Map.fetch(attestedUserDetails, "designation")
+      {:ok, attestingCompanyDetails} = Map.fetch(workExResult, "attestingCompanyDetails")
+      {:ok, attestingCompanyName} = Map.fetch(attestingCompanyDetails, "name") 
+    
+            
+      %{
+        transaction: transaction,
+        attestationOne: attestationOne,
+        attestationTwo: attestationTwo,
+        vanityOne: vanityOne,
+        vanityTwo: vanityTwo,
+        tx_address: tx_address,
+        hash: Hash.to_string(transaction.hash),
+        data: data,
+        workExResult: workExResult,
+        signedByType: signedByType,
+        companyName: companyName,
+        attestedUserFullName: attestedUserFullName,
+        attestedUserDesignation: attestedUserDesignation,
+        profileHeadlineType: profileHeadlineType,
+        attestingUserFullName: "",
+        attestingCompanyName: attestingCompanyName,
+        vanityUserFullName: "",
+        userVanityURL: ""
+      }
+    end
+    
+    def vanityMapping(data, transaction, attestationOne, attestationTwo, vanityOne, vanityTwo, tx_address) do
+      {:ok, vanityResult} = Map.fetch(data, "vanityResult")
+      {:ok, userName} = Map.fetch(vanityResult, "name")
+      {:ok, vanityUserFullName} = Map.fetch(userName, "full")
+      {:ok, userVanityURL} = Map.fetch(vanityResult, "vanity_url")
+      
+      %{
+        transaction: transaction,
+        attestationOne: attestationOne,
+        attestationTwo: attestationTwo,
+        vanityOne: vanityOne,
+        vanityTwo: vanityTwo,
+        tx_address: tx_address,
+        hash: Hash.to_string(transaction.hash),
+        data: data,
+        workExResult: "",
+        tx: "",
+        companyName: "",
+        attestedUserFullName: "",
+        attestedUserDesignation: "",
+        profileHeadlineType: "",
+        attestingUserFullName: "",
+        attestingCompanyName: "",
+        vanityUserFullName: vanityUserFullName,
+        userVanityURL: userVanityURL
+      }
+    end
+
+
+
 
   def index(conn, _params) do
     transaction_estimated_count = Chain.transaction_estimated_count()
